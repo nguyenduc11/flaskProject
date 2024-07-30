@@ -1,34 +1,36 @@
-from flask import render_template, request, redirect, url_for, jsonify
-from bson.objectid import ObjectId
+# app/routes.py
+from flask import render_template, request, redirect, url_for, flash
 from app import app, db
 
 @app.route('/')
-@app.route('/todos')
+def index():
+    return render_template('index.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        # Add your login logic here
+        flash('Login functionality is not implemented yet.', 'warning')
+        return redirect(url_for('login'))
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        # Add your registration logic here
+        flash('Registration functionality is not implemented yet.', 'warning')
+        return redirect(url_for('register'))
+    return render_template('register.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/todo')
 def todos():
     tasks = list(db.tasks.find())
     return render_template('todo.html', tasks=tasks)
-
-@app.route('/add_todo', methods=['POST'])
-def add_todo():
-    title = request.form.get('title')
-    description = request.form.get('description')
-
-    if title and description:
-        db.tasks.insert_one({"title": title, "description": description, "completed": False})
-    return redirect(url_for('todos'))
-
-@app.route('/edit_todo/<task_id>', methods=['GET', 'POST'])
-def edit_todo(task_id):
-    if request.method == 'POST':
-        title = request.form.get('title')
-        description = request.form.get('description')
-        if title and description:
-            db.tasks.update_one({'_id': ObjectId(task_id)}, {"$set": {"title": title, "description": description}})
-        return redirect(url_for('todos'))
-    task = db.tasks.find_one({"_id": ObjectId(task_id)})
-    return render_template('edit_todo.html', task=task)
-
-@app.route('/delete_todo/<task_id>', methods=['POST'])
-def delete_todo(task_id):
-    db.tasks.delete_one({"_id": ObjectId(task_id)})
-    return redirect(url_for('todos'))
