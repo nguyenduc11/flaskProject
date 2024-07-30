@@ -3,3 +3,13 @@ Flask-SQLAlchemy
 Flask-Bcrypt
 Flask-Login
 Flask-WTF
+
+mongo new pass word
+uzygDnKI5gImLoo8
+this1smatkhauMDB
+
+newuser
+O5xAVJ4oqcNRxiDi
+
+
+atlasadmin:BseouAiAnmd5FOy1

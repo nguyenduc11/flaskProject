@@ -1,31 +1,34 @@
-from flask import render_template, flash, redirect, url_for
-from app import app
-from app.forms import RegistrationForm, LoginForm
+from flask import render_template, request, redirect, url_for, jsonify
+from bson.objectid import ObjectId
+from app import app, db
 
-@app.route("/")
-@app.route("/home")
-def home():
-    return render_template('index.html', title='Home')
+@app.route('/')
+@app.route('/todos')
+def todos():
+    tasks = list(db.tasks.find())
+    return render_template('todo.html', tasks=tasks)
 
-@app.route("/about")
-def about():
-    return render_template('about.html', title='About')
+@app.route('/add_todo', methods=['POST'])
+def add_todo():
+    title = request.form.get('title')
+    description = request.form.get('description')
 
-@app.route("/register", methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
-    return render_template('register.html', title='Register', form=form)
+    if title and description:
+        db.tasks.insert_one({"title": title, "description": description, "completed": False})
+    return redirect(url_for('todos'))
 
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+@app.route('/edit_todo/<task_id>', methods=['GET', 'POST'])
+def edit_todo(task_id):
+    if request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
+        if title and description:
+            db.tasks.update_one({'_id': ObjectId(task_id)}, {"$set": {"title": title, "description": description}})
+        return redirect(url_for('todos'))
+    task = db.tasks.find_one({"_id": ObjectId(task_id)})
+    return render_template('edit_todo.html', task=task)
+
+@app.route('/delete_todo/<task_id>', methods=['POST'])
+def delete_todo(task_id):
+    db.tasks.delete_one({"_id": ObjectId(task_id)})
+    return redirect(url_for('todos'))
