@@ -1,42 +1,43 @@
-from flask import render_template, request, redirect, url_for, flash
+# app/routes.py
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from app import app, db
 import random
 import plotly.graph_objects as go
 import plotly.io as pio
+from bokeh.plotting import figure
+from bokeh.embed import components
+from bokeh.models import Arrow, NormalHead, OpenHead, VeeHead
+from bokeh.palettes import Muted3 as color
 
-# Home route
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        email = request.form['email']
+        password = request.form['password']
         # Add your login logic here
         flash('Login functionality is not implemented yet.', 'warning')
         return redirect(url_for('login'))
     return render_template('login.html')
 
-# Register route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        email = request.form['email']
+        password = request.form['password']
         # Add your registration logic here
         flash('Registration functionality is not implemented yet.', 'warning')
         return redirect(url_for('register'))
     return render_template('register.html')
 
-# About route
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-# Guess the Sum Application Logic
+
 class GuessSumApp:
     def __init__(self):
         self.correct_sum = None
@@ -45,11 +46,11 @@ class GuessSumApp:
         self.start_new_round()
 
     def start_new_round(self):
-        self.number1 = random.randint(1, 9)
-        self.number2 = random.randint(1, 9)
-        while self.number1 + self.number2 <= 10:
+        while True:
             self.number1 = random.randint(1, 9)
             self.number2 = random.randint(1, 9)
+            if self.number1 + self.number2 > 10:
+                break
         self.correct_sum = None
 
     def check_sum(self, user_guess):
@@ -75,15 +76,16 @@ class GuessSumApp:
 
         bars = []
         for i, (num, label, color) in enumerate(zip(numbers, labels, colors)):
-            bars.append(go.Bar(
-                y=[label],
-                x=[1],
-                base=[0],
-                marker=dict(color=color, line=dict(color='black', width=1)),
-                name=label,
-                orientation='h',
-                width=0.5
-            ))
+            for j in range(num):
+                bars.append(go.Bar(
+                    y=[label],
+                    x=[1],
+                    base=[j],
+                    marker=dict(color=color, line=dict(color='black', width=1)),
+                    name=label,
+                    orientation='h',
+                    width=0.5
+                ))
 
         layout = go.Layout(
             title='Numbers to Add' if self.correct_sum is None else 'Numbers and Sum',
@@ -94,6 +96,7 @@ class GuessSumApp:
             paper_bgcolor='#f8f9fa',
             showlegend=False,
             shapes=[
+                # Red thick line at y=10
                 dict(
                     type="line",
                     x0=10, x1=10,
@@ -110,9 +113,9 @@ class GuessSumApp:
         plot_html = pio.to_html(fig, full_html=False)
         return plot_html
 
+
 app_logic = GuessSumApp()
 
-# Guess the Sum route
 @app.route('/guest-the-sum', methods=["GET", "POST"])
 def guest_the_sum():
     if request.method == "POST":
@@ -135,7 +138,7 @@ def guest_the_sum():
                 else:
                     message = f"Sai. Kết quả đúng là {correct_sum}."
                     plot_html = app_logic.generate_chart()
-                    return render_template("index.html", number1=app_logic.number1, number2=app_logic.number2,
+                    return render_template("guest-the-sum.html", number1=app_logic.number1, number2=app_logic.number2,
                                            message=message, plot_html=plot_html)
             except ValueError:
                 message = "Invalid input. Please enter a valid number."
@@ -148,10 +151,28 @@ def guest_the_sum():
     return render_template("guest-the-sum.html", number1=app_logic.number1, number2=app_logic.number2,
                            plot_html=plot_html)
 
-
-
-# To-Do List route
 @app.route('/todos')
 def todos():
     tasks = list(db.tasks.find())
     return render_template('todos.html', tasks=tasks)
+
+
+
+
+
+@app.route('/bokeh', methods=['GET', 'POST'])
+def bokeh_view():
+    return render_template('bokeh.html')
+
+
+
+@app.route('/todos', methods=['POST'])
+def add_todo():
+    print(request)
+    title = request.form.get('title')
+    description = request.form.get('description')
+    if title and description:
+        db.tasks.insert_one({'title': title, 'description': description, 'completed': False})
+        return redirect("/")
+    else:
+        return jsonify({'error': 'Title and description are required.'}), 400

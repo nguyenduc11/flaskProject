@@ -8,7 +8,7 @@
     <h1 class="text-center">Tính Tổng</h1>
     <div class="row justify-content-center mt-4">
         <div class="col-md-8">
-            <form method="POST" action="/">
+            <form method="POST" action="/guest-the-sum">
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Số thứ nhất:</label>
                     <div class="col-sm-8">
@@ -33,7 +33,7 @@
                 <div class="alert alert-info mt-3">{{ message }}</div>
             {% endif %}
             {% if show_new_round %}
-                <form method="POST" action="/">
+                <form method="POST" action="guest-the-sum">
                     <button type="submit" name="new_round" class="btn btn-secondary btn-block">Vòng mới</button>
                 </form>
             {% endif %}

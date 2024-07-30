@@ -1,0 +1,21 @@
+<!-- templates/bokeh.html -->
+{% extends 'base.html' %}
+
+{% block title %}Bokeh Visualization{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center">Bokeh Visualization</h1>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-12">
+                {% if plot_html %}
+                    <div class="mt-4">
+                        {{ plot_html|safe }}
+                    </div>
+                {% else %}
+                    <p>No plot to display. Please provide input data.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
