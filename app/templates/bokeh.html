@@ -8,6 +8,21 @@
         <h1 class="text-center">Bokeh Visualization</h1>
         <div class="row justify-content-center mt-4">
             <div class="col-md-12">
+                <form method="POST" action="/bokeh">
+                    <div class="form-group">
+                        <label for="number1">Number 1</label>
+                        <input type="number" class="form-control" id="number1" name="number1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="number2">Number 2</label>
+                        <input type="number" class="form-control" id="number2" name="number2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="number3">Number 3</label>
+                        <input type="number" class="form-control" id="number3" name="number3" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
                 {% if plot_html %}
                     <div class="mt-4">
                         {{ plot_html|safe }}

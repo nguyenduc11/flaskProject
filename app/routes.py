@@ -6,9 +6,7 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from bokeh.plotting import figure
 from bokeh.embed import components
-from bokeh.models import Arrow, NormalHead, OpenHead, VeeHead
-from bokeh.palettes import Muted3 as color
-
+from bokeh.palettes import Category10
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -160,9 +158,6 @@ def todos():
 
 
 
-@app.route('/bokeh', methods=['GET', 'POST'])
-def bokeh_view():
-    return render_template('bokeh.html')
 
 
 
@@ -176,3 +171,42 @@ def add_todo():
         return redirect("/")
     else:
         return jsonify({'error': 'Title and description are required.'}), 400
+
+
+
+def generate_triangle_html(number1, number2, number3):
+    # Create a new plot
+    plot = figure(title="Triangle")
+
+    # Calculate the maximum value for x_range and y_range
+    max_value = max(number1 + number2 + number3, number1, number2, number3)
+
+    # Set the x_range and y_range using the calculated maximum value
+    plot.x_range = (0, max_value)
+    plot.y_range = (0, max_value)
+
+    # Add the triangle glyph to the plot
+    plot.triangle(
+        x=[0, number1, number1 + number2, number1 + number2, number1],
+        y=[0, number1, number1, number1 + number2, number1 + number2],
+        size=10,
+        color=color[0]
+    )
+
+    # Generate the HTML for the plot
+    script, div = components(plot)
+
+    return script, div
+
+@app.route('/bokeh', methods=['GET', 'POST'])
+def bokeh_view():
+    if request.method == 'POST':
+        number1 = request.form.get('number1')
+        number2 = request.form.get('number2')
+        number3 = request.form.get('number3')
+        if number1 and number2 and number3:
+            script, div = generate_triangle_html(number1, number2, number3)
+            return render_template('bokeh.html', plot_script=script, plot_div=div)
+        else:
+            return jsonify({'error': 'All numbers are required.'}), 400
+    return render_template('bokeh.html')
