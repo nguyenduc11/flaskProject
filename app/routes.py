@@ -6,7 +6,8 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from bokeh.plotting import figure
 from bokeh.embed import components
-from bokeh.palettes import Category10
+from bokeh.models import ColumnDataSource
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -174,39 +175,32 @@ def add_todo():
 
 
 
-def generate_triangle_html(number1, number2, number3):
+
+def generate_column_chart_html(number1, number2, number3):
     # Create a new plot
-    plot = figure(title="Triangle")
+    plot = figure(title="Column Chart")
 
-    # Calculate the maximum value for x_range and y_range
-    max_value = max(number1 + number2 + number3, number1, number2, number3)
+    # Create a ColumnDataSource with the data
+    data = {'x': ['Number 1', 'Number 2', 'Number 3'], 'y': [number1, number2, number3]}
+    source = ColumnDataSource(data=data)
 
-    # Set the x_range and y_range using the calculated maximum value
-    plot.x_range = (0, max_value)
-    plot.y_range = (0, max_value)
-
-    # Add the triangle glyph to the plot
-    plot.triangle(
-        x=[0, number1, number1 + number2, number1 + number2, number1],
-        y=[0, number1, number1, number1 + number2, number1 + number2],
-        size=10,
-        color=color[0]
-    )
+    # Add the column glyph to the plot
+    plot.vbar(x='x', top='y', width=0.9, source=source)
 
     # Generate the HTML for the plot
     script, div = components(plot)
-
     return script, div
+
+
 
 @app.route('/bokeh', methods=['GET', 'POST'])
 def bokeh_view():
     if request.method == 'POST':
-        number1 = request.form.get('number1')
-        number2 = request.form.get('number2')
-        number3 = request.form.get('number3')
-        if number1 and number2 and number3:
-            script, div = generate_triangle_html(number1, number2, number3)
-            return render_template('bokeh.html', plot_script=script, plot_div=div)
-        else:
-            return jsonify({'error': 'All numbers are required.'}), 400
-    return render_template('bokeh.html')
+        number1 = int(request.form.get('number1'))
+        number2 = int(request.form.get('number2'))
+        number3 = int(request.form.get('number3'))
+        script, div = generate_column_chart_html(number1, number2, number3)
+        return render_template('bokeh.html', plot_html=script + div)
+    else:
+        return render_template('bokeh.html')
+
