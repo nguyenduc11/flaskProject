@@ -1,0 +1,39 @@
+flaskProject/
+│
+├── app/
+│   ├── __init__.py
+│   ├── routes.py  # General routes (e.g., index, base, etc.)
+│   ├── extensions.py  # Extensions like db, login_manager
+│   ├── auth/
+│   │   ├── __init__.py
+│   │   ├── routes.py  # Auth-related routes (login, register)
+│   │   └── forms.py  # Auth-related forms (optional)
+│   ├── main/
+│   │   ├── __init__.py
+│   │   ├── routes.py  # General content (about, home, etc.)
+│   │   └── utils.py  # Utility functions (if needed)
+│   ├── static/
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── images/
+│   ├── templates/
+│   │   ├── auth/
+│   │   │   ├── login.html
+│   │   │   ├── register.html
+│   │   ├── main/
+│   │   │   ├── index.html
+│   │   │   ├── about.html
+│   │   ├── base.html
+│   │   ├── navbar.html
+│   │   ├── guest-the-sum.html
+│   │   ├── bokeh.html
+│   └── guess_sum/
+│       ├── __init__.py
+│       ├── routes.py  # Routes specific to the "Guess the Sum" game
+│       ├── templates/
+│           └── guest-the-sum.html
+│
+├── config.py
+├── requirements.txt
+├── Procfile
+└── run.py  # Entry point to start the Flask application

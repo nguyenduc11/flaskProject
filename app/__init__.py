@@ -1,13 +1,21 @@
 from flask import Flask
 from flask_pymongo import PyMongo
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['MONGO_URI'] = 'mongodb+srv://atlasadmin:BseouAiAnmd5FOy1@cluster0.jp5bm2w.mongodb.net/flask_todo_app?retryWrites=true&w=majority'
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'your_secret_key'
+    app.config['MONGO_URI'] = 'mongodb+srv://atlasadmin:BseouAiAnmd5FOy1@cluster0.jp5bm2w.mongodb.net/flask_todo_app?retryWrites=true&w=majority'
 
-mongo = PyMongo(app)
+    mongo = PyMongo(app)
+    db = mongo.db
 
-# Ensure the database and collection are correctly referenced
-db = mongo.db
+    from app.learnhtml import learnhtml as learnhtml_blueprint
+    app.register_blueprint(learnhtml_blueprint, url_prefix='/learnhtml')
 
-from app import routes
+    from app.main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    from app.auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    return app
