@@ -16,9 +16,7 @@ def create_app():
     app.register_blueprint(learnhtml_blueprint, url_prefix='/learnhtml')
 
     from app.mongo import mongo as mongo_blueprint
-    app.register_blueprint(mongo_blueprint, url_prefix='/')
-
-
+    app.register_blueprint(mongo_blueprint, url_prefix='/mongo')
 
     from app.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
