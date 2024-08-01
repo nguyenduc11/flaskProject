@@ -18,6 +18,9 @@ def create_app():
     from app.mongo import mongo as mongo_blueprint
     app.register_blueprint(mongo_blueprint, url_prefix='/mongo')
 
+    from app.math_quiz01 import math_quiz01 as math_quiz01_blueprint
+    app.register_blueprint(math_quiz01_blueprint)
+
     from app.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
