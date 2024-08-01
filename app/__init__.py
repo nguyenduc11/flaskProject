@@ -9,11 +9,16 @@ def create_app():
     mongo = PyMongo(app)
     db = mongo.db
 
+    from app.main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
     from app.learnhtml import learnhtml as learnhtml_blueprint
     app.register_blueprint(learnhtml_blueprint, url_prefix='/learnhtml')
 
-    from app.main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    from app.mongo import mongo as mongo_blueprint
+    app.register_blueprint(mongo_blueprint, url_prefix='/')
+
+
 
     from app.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')

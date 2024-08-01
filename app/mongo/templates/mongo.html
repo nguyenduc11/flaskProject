@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Comprehensive Lecture</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">MongoDB: A Comprehensive Lecture</h1>
+
+        <section id="introduction">
+            <h2>1. Introduction to MongoDB</h2>
+            <p>MongoDB is a popular NoSQL database that provides high performance, high availability, and easy scalability. It works on concept of collection and document.</p>
+        </section>
+
+        <section id="key-features">
+            <h2>2. Key Features of MongoDB</h2>
+            <ul>
+                <li>Document-Oriented Storage</li>
+                <li>Indexing</li>
+                <li>Replication</li>
+                <li>Sharding</li>
+                <li>Aggregation</li>
+                <li>Ad Hoc Queries</li>
+            </ul>
+        </section>
+
+        <section id="data-model">
+            <h2>3. MongoDB Data Model</h2>
+            <p>MongoDB stores data in flexible, JSON-like documents called BSON (Binary JSON). Fields can vary from document to document, and data structure can be changed over time.</p>
+        </section>
+
+        <section id="crud-operations">
+            <h2>4. CRUD Operations</h2>
+            <h3>Create</h3>
+            <pre><code>db.collection.insertOne(document)
+db.collection.insertMany([document1, document2])</code></pre>
+
+            <h3>Read</h3>
+            <pre><code>db.collection.find(query)
+db.collection.findOne(query)</code></pre>
+
+            <h3>Update</h3>
+            <pre><code>db.collection.updateOne(filter, update)
+db.collection.updateMany(filter, update)</code></pre>
+
+            <h3>Delete</h3>
+            <pre><code>db.collection.deleteOne(filter)
+db.collection.deleteMany(filter)</code></pre>
+        </section>
+
+        <section id="indexing">
+            <h2>5. Indexing in MongoDB</h2>
+            <p>Indexes support the efficient execution of queries in MongoDB. Without indexes, MongoDB must perform a collection scan, i.e., scan every document in a collection, to select those documents that match the query statement.</p>
+        </section>
+
+        <section id="aggregation">
+            <h2>6. Aggregation Framework</h2>
+            <p>MongoDB's aggregation framework is a set of analytical tools that allow you to do complex data analysis on your MongoDB collections.</p>
+        </section>
+
+        <section id="replication">
+            <h2>7. Replication and Sharding</h2>
+            <p>Replication provides redundancy and increases data availability. Sharding distributes data across multiple machines to support deployments with very large data sets and high throughput operations.</p>
+        </section>
+
+        <section id="security">
+            <h2>8. Security Features</h2>
+            <p>MongoDB provides various features like authentication, role-based access control, and encryption to secure your database.</p>
+        </section>
+
+        <section id="use-cases">
+            <h2>9. Use Cases and Best Practices</h2>
+            <p>MongoDB is well-suited for real-time analytics, content management systems, mobile applications, and IoT. Best practices include proper indexing, data modeling, and regular backups.</p>
+        </section>
+
+        <section id="conclusion">
+            <h2>10. Conclusion</h2>
+            <p>MongoDB offers a flexible and scalable solution for modern application development. Its rich feature set and ease of use make it a popular choice among developers.</p>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
