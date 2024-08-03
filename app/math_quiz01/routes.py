@@ -70,5 +70,3 @@ def generate_questions():
         question = f"{num1} - {num2} = ?"
         questions.append(question)
     return questions
-
-

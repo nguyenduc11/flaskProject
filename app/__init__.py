@@ -11,6 +11,8 @@ def create_app():
 
     from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+    from app.about import about as about_blueprint
+    app.register_blueprint(about_blueprint)
 
     from app.learnhtml import learnhtml as learnhtml_blueprint
     app.register_blueprint(learnhtml_blueprint, url_prefix='/learnhtml')

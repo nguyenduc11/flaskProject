@@ -1,54 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phép trừ có nhơ</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 font-sans">
-    <div class="container mx-auto px-4 py-8 max-w-2xl">
-        <h1 class="text-3xl font-bold text-center text-blue-600 mb-8">Math Quiz</h1>
+{% extends 'base.html' %}
+
+{% block title %}Math Quiz 01{% endblock %}
+{% block content %}
+    <div class="container mx-auto px-4 py-5 max-w-2xl">
+        <h1 class="display-5 fw-bold text-center text-primary mb-4">Math Quiz</h1>
 
         {% if questions %}
-        <form method="post" action="/quiz01" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <form method="post" action="/quiz01" class="bg-light shadow rounded p-4 mb-4">
             {% for question in questions %}
-            <div class="mb-4 flex items-center">
-                <label class="text-gray-700 text-sm font-bold mr-4 flex-shrink-0 w-1/2" for="answer{{ loop.index }}">
+            <div class="mb-3 row">
+                <label class="col-sm-6 col-form-label fw-bold" for="answer{{ loop.index }}">
                     {{ question }}
                 </label>
-                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="answer{{ loop.index }}" type="number" name="answer{{ loop.index }}" required>
+                <div class="col-sm-6">
+                    <input class="form-control"
+                           id="answer{{ loop.index }}" type="number" name="answer{{ loop.index }}" required>
+                </div>
             </div>
             {% endfor %}
-            <div class="flex items-center justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        type="submit" name="submit">
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-primary" type="submit" name="submit">
                     Kiểm tra
                 </button>
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        type="submit" name="restart">
+                <button class="btn btn-danger" type="submit" name="restart">
                     Vòng mới
                 </button>
             </div>
         </form>
         {% elif score is defined and correct_answers is defined %}
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <p class="text-xl font-bold mb-4">Your score: {{ score }}</p>
-            <p class="font-bold mb-2">Correct answers:</p>
-            <ul class="list-disc pl-5 mb-4">
+        <div class="bg-light shadow rounded p-4 mb-4">
+            <p class="h5 fw-bold mb-3">Your score: {{ score }}</p>
+            <p class="fw-bold mb-2">Correct answers:</p>
+            <ul class="list-unstyled ps-3 mb-3">
                 {% for answer in correct_answers %}
                 <li class="mb-1">{{ answer }}</li>
                 {% endfor %}
             </ul>
             <a href="{{ url_for('math_quiz01.math_quiz01') }}"
-               class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+               class="btn btn-success">
                 Vòng mới
             </a>
         </div>
         {% else %}
-        <p class="text-center text-gray-600">Loading...</p>
+        <p class="text-center text-muted">Loading...</p>
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}

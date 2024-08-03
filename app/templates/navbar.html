@@ -1,10 +1,21 @@
-<ul class="navbar-nav">
-    <p>Nav Bar</p>
-<!--    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>-->
-    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
-<!--    <li class="nav-item"><a class="nav-link" href="{{ url_for('mongo.mongo') }}">Mongo</a></li>-->
-    <li class="nav-item"><a class="nav-link" href="{{ url_for('math_quiz01.math_quiz01') }}">Làm Toán</a></li>
-<!--    <li class="nav-item"><a class="nav-link" href="{{ url_for('learnhtml.placeholder') }}">Learn HTML</a></li>-->
-
-    <!-- Add other links as needed -->
-</ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">Flask App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('about.about') }}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('math_quiz01.math_quiz01') }}">Làm Toán</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
