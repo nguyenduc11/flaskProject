@@ -1,0 +1,12 @@
+Cluster: ClusterFlaskWeb
+username: nguyenduc11
+password: NJtdKiz5DQDU4HE2
+
+Connect with python
+URI (cluster): mongodb+srv://nguyenduc11:NJtdKiz5DQDU4HE2@clusterflaskweb.refwjuv.mongodb.net/?retryWrites=true&w=majority&appName=ClusterFlaskWeb
+
+URI (database): app.config['MONGO_URI'] = 'mongodb+srv://nguyenduc11:NJtdKiz5DQDU4HE2@clusterflaskweb.refwjuv.mongodb.net/flask_web?retryWrites=true&w=majority&appName=ClusterFlaskWeb'
+
+MongoDB Compass Connection String: mongodb+srv://nguyenduc11:NJtdKiz5DQDU4HE2@clusterflaskweb.refwjuv.mongodb.net/
+
+

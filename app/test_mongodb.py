@@ -1,8 +1,8 @@
 from pymongo import MongoClient
 
 # Replace the following with your MongoDB URI
-uri = ("mongodb+srv://atlasadmin:BseouAiAnmd5FOy1@cluster0.jp5bm2w.mongodb.net/?retryWrites=true&w=majority&appName"
-       "=Cluster0")
+uri = (
+    "mongodb+srv://nguyenduc11:NJtdKiz5DQDU4HE2@clusterflaskweb.refwjuv.mongodb.net/?retryWrites=true&w=majority&appName=ClusterFlaskWeb")
 
 try:
     client = MongoClient(uri)

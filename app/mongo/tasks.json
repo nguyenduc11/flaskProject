@@ -1,0 +1,72 @@
+[
+    {
+        "task": "Buy groceries",
+        "description": "Milk, Bread, Eggs, Butter",
+        "priority": "High",
+        "status": "Pending",
+        "due_date": "2024-08-05"
+    },
+    {
+        "task": "Call mom",
+        "description": "Check in and chat about weekend plans",
+        "priority": "Medium",
+        "status": "Pending",
+        "due_date": "2024-08-06"
+    },
+    {
+        "task": "Complete project report",
+        "description": "Finalize and submit the quarterly report",
+        "priority": "High",
+        "status": "In Progress",
+        "due_date": "2024-08-07"
+    },
+    {
+        "task": "Workout",
+        "description": "45 minutes of cardio",
+        "priority": "Medium",
+        "status": "Pending",
+        "due_date": "2024-08-04"
+    },
+    {
+        "task": "Read a book",
+        "description": "Read 50 pages of 'Atomic Habits'",
+        "priority": "Low",
+        "status": "Pending",
+        "due_date": "2024-08-08"
+    },
+    {
+        "task": "Clean the house",
+        "description": "Vacuum, dust, and mop floors",
+        "priority": "Low",
+        "status": "Pending",
+        "due_date": "2024-08-09"
+    },
+    {
+        "task": "Prepare presentation",
+        "description": "Create slides for the upcoming meeting",
+        "priority": "High",
+        "status": "Pending",
+        "due_date": "2024-08-10"
+    },
+    {
+        "task": "Update LinkedIn profile",
+        "description": "Add recent projects and achievements",
+        "priority": "Medium",
+        "status": "Pending",
+        "due_date": "2024-08-11"
+    },
+    {
+        "task": "Schedule dentist appointment",
+        "description": "Annual check-up and cleaning",
+        "priority": "Low",
+        "status": "Pending",
+        "due_date": "2024-08-12"
+    },
+    {
+        "task": "Plan weekend getaway",
+        "description": "Research destinations and book accommodations",
+        "priority": "Medium",
+        "status": "Pending",
+        "due_date": "2024-08-13"
+    }
+]

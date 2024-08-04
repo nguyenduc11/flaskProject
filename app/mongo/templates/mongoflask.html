@@ -1,0 +1,272 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr" platform="win"><head>
+    <title id="reader-title">Flask-PyMongo With MongoDB Atlas Guide | MongoDB</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src chrome:; img-src data: *; media-src *; object-src 'none'">
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta name="viewport" content="width=device-width; user-scalable=0">
+    <link rel="stylesheet" href="chrome://global/skin/design-system/tokens-brand.css">
+    <link rel="stylesheet" href="chrome://global/skin/aboutReader.css" type="text/css">
+    <link rel="localization" href="toolkit/about/aboutReader.ftl">
+    <link rel="localization" href="toolkit/branding/brandings.ftl">
+    <script type="module" src="chrome://global/content/reader/moz-slider.mjs"></script>
+    <script type="module" src="chrome://global/content/reader/color-input.mjs"></script>
+    <script type="module" src="chrome://global/content/elements/named-deck.js"></script>
+  <link rel="stylesheet" href="chrome://global/skin/narrate.css"><link rel="shortcut icon" href="https://www.mongodb.com/assets/images/global/favicon.ico"></head>
+
+  <body class="dark sans-serif loaded" style="--content-width: 30em; --font-size: 20px;">
+    <div class="top-anchor"></div>
+
+    <div id="toolbar" class="toolbar-container scrolled">
+      <div class="toolbar reader-toolbar">
+        <div class="reader-controls" articledir="ltr">
+          <button class="close-button toolbar-button" aria-labelledby="toolbar-close" data-telemetry-id="reader-close">
+            <span class="hover-label" id="toolbar-close" data-l10n-id="about-reader-toolbar-close">Close Reader View</span>
+          </button>
+          <ul class="dropdown improved-style-dropdown" id="improved-text-menu" hidden="true">
+            <li>
+              <button class="dropdown-toggle toolbar-button improved-style-button" aria-labelledby="toolbar-text-layout-controls" data-telemetry-id="reader-text-layout-controls">
+                <span class="hover-label" id="toolbar-text-layout-controls" data-l10n-id="about-reader-toolbar-text-layout-controls">Text and layout</span>
+              </button>
+            </li>
+            <li class="dropdown-popup" id="text-layout-controls">
+              <h2 data-l10n-id="about-reader-text-header" id="about-reader-text-header">Text</h2>
+              <div id="text-size-controls">
+                <span data-l10n-id="about-reader-text-size-label" id="about-reader-text-size-label">Text size</span>
+                <div class="text-size-buttons buttonrow">
+                  <button class="text-size-minus-button" data-l10n-id="about-reader-toolbar-minus" title="Decrease font size"></button>
+                  <button class="text-size-plus-button" data-l10n-id="about-reader-toolbar-plus" title="Increase font size"></button>
+                </div>
+              </div>
+              <div id="font-controls">
+                <div id="font-type-dropdown" class="dropdown-selector">
+                  <label for="font-type-selector" data-l10n-id="about-reader-font-type-selector-label">Font</label>
+                  <select name="font-type-selector" id="font-type-selector"></select>
+                </div>
+                <div id="font-weight-dropdown" class="dropdown-selector">
+                  <label for="font-weight-selector" data-l10n-id="about-reader-font-weight-selector-label">Font weight</label>
+                  <select name="font-weight-selector" id="font-weight-selector"></select>
+                </div>
+              </div>
+              <hr>
+              <h2 data-l10n-id="about-reader-layout-header" id="about-reader-layout-header">Layout</h2>
+              <div id="content-width-slider" class="slider-container"></div>
+              <div id="line-spacing-slider" class="slider-container"></div>
+              <hr>
+              <details id="about-reader-advanced-layout">
+                <summary class="accordion-header">
+                  <h2 data-l10n-id="about-reader-advanced-layout-header" id="about-reader-advanced-layout-header">Advanced</h2>
+                  <span class="chevron-icon"></span>
+                </summary>
+                <div id="character-spacing-slider" class="slider-container"></div>
+                <div id="word-spacing-slider" class="slider-container"></div>
+                <label for="text-alignment-buttons" data-l10n-id="about-reader-text-alignment-label">Text alignment</label>
+                <div class="text-alignment-buttons radiorow" id="text-alignment-buttons"></div>
+                <button class="text-layout-reset-button reset-button" data-l10n-id="about-reader-reset-button">Reset defaults</button>
+              </details>
+            </li>
+          </ul>
+          <ul class="dropdown style-dropdown" id="regular-text-menu">
+            <li>
+              <button class="dropdown-toggle toolbar-button style-button" aria-labelledby="toolbar-type-controls" data-telemetry-id="reader-type-controls">
+                <span class="hover-label" id="toolbar-type-controls" data-l10n-id="about-reader-toolbar-type-controls">Type controls</span>
+              </button>
+            </li>
+            <li class="dropdown-popup">
+              <div class="font-type-buttons radiorow"><input id="radio-itemsans-serif-button" type="radio" class="radio-button" name="font-type" checked="checked"><label for="radio-itemsans-serif-button" class="sans-serif-button" data-l10n-id="about-reader-font-type-sans-serif" checked="true">Sans-serif</label><input id="radio-itemserif-button" type="radio" class="radio-button" name="font-type"><label for="radio-itemserif-button" class="serif-button" data-l10n-id="about-reader-font-type-serif">Serif</label></div>
+              <div class="font-size-buttons buttonrow">
+                <button class="minus-button" data-l10n-id="about-reader-toolbar-minus" title="Decrease font size"></button>
+                <span class="font-size-value">5</span>
+                <button class="plus-button" data-l10n-id="about-reader-toolbar-plus" title="Increase font size"></button>
+              </div>
+              <div class="content-width-buttons buttonrow">
+                <button class="content-width-minus-button" data-l10n-id="about-reader-toolbar-contentwidthminus" title="Decrease Content Width"></button>
+                <span class="content-width-value">3</span>
+                <button class="content-width-plus-button" data-l10n-id="about-reader-toolbar-contentwidthplus" title="Increase Content Width"></button>
+              </div>
+              <div class="line-height-buttons buttonrow">
+                <button class="line-height-minus-button" data-l10n-id="about-reader-toolbar-lineheightminus" title="Decrease Line Height"></button>
+                <span class="line-height-value">4</span>
+                <button class="line-height-plus-button" data-l10n-id="about-reader-toolbar-lineheightplus" title="Increase Line Height"></button>
+              </div>
+              <div class="color-scheme-buttons radiorow" id="regular-color-scheme" hidden="false"><input id="radio-itemauto-button" type="radio" class="radio-button" name="color-scheme" checked="checked"><label for="radio-itemauto-button" class="auto-button" data-l10n-id="about-reader-color-auto-theme" checked="true" title="Auto theme">Auto</label><input id="radio-itemlight-button" type="radio" class="radio-button" name="color-scheme"><label for="radio-itemlight-button" class="light-button" data-l10n-id="about-reader-color-light-theme" title="Light theme">Light</label><input id="radio-itemdark-button" type="radio" class="radio-button" name="color-scheme"><label for="radio-itemdark-button" class="dark-button" data-l10n-id="about-reader-color-dark-theme" title="Dark theme">Dark</label><input id="radio-itemsepia-button" type="radio" class="radio-button" name="color-scheme"><label for="radio-itemsepia-button" class="sepia-button" data-l10n-id="about-reader-color-sepia-theme" title="Sepia theme">Sepia</label></div>
+            </li>
+          </ul>
+          <ul class="dropdown colors-dropdown" id="custom-colors-color-scheme" hidden="true">
+            <li>
+              <button class="dropdown-toggle toolbar-button colors-button" aria-labelledby="toolbar-color-controls" data-telemetry-id="reader-color-controls">
+                <span class="hover-label" id="toolbar-color-controls" data-l10n-id="about-reader-toolbar-theme-controls">Theme</span>
+              </button>
+            </li>
+            <li class="dropdown-popup" id="color-controls">
+              <h2 data-l10n-id="about-reader-colors-menu-header" id="about-reader-colors-menu-header">Theme</h2>
+              <button-group aria-labelledby="about-reader-colors-menu-header" role="tablist">
+                <button is="named-deck-button" deck="tabs-deck" name="fxtheme" data-l10n-id="about-reader-fxtheme-tab" id="tabs-deck-button-fxtheme" role="tab" aria-selected="true" tabindex="0" selected="">Default</button>
+                <button is="named-deck-button" deck="tabs-deck" name="customtheme" data-l10n-id="about-reader-customtheme-tab" id="tabs-deck-button-customtheme" role="tab" aria-selected="false" tabindex="-1">Custom</button>
+              </button-group>
+              <named-deck id="tabs-deck" is-tabbed="" selected-view="fxtheme">
+                <div name="fxtheme" class="colors-menu-color-scheme-buttons radiorow" aria-labelledby="tabs-deck-button-fxtheme" role="tabpanel" slot="selected"></div>
+                <div name="customtheme" aria-labelledby="tabs-deck-button-customtheme" role="tabpanel" slot="">
+                  <ul class="custom-colors-selection"></ul>
+                  <button class="custom-colors-reset-button reset-button" data-l10n-id="about-reader-reset-button">Reset defaults</button>
+                </div>
+              </named-deck>
+            </li>
+          </ul>
+        <ul class="dropdown narrate-dropdown"><li><button class="dropdown-toggle toolbar-button narrate-toggle" data-telemetry-id="reader-listen" aria-label="Read aloud (N)"><span class="hover-label">Read aloud (N)</span></button></li><li class="dropdown-popup"><div class="narrate-row narrate-control"><button class="narrate-skip-previous" disabled="disabled" aria-keyshortcuts="ArrowLeft" title="Back (←)"></button><button class="narrate-start-stop" aria-keyshortcuts="N" title="Start (N)"></button><button class="narrate-skip-next" disabled="disabled" aria-keyshortcuts="ArrowRight" title="Forward (→)"></button></div><div class="narrate-row narrate-rate"><input class="narrate-rate-input" value="0" step="5" max="100" min="-100" type="range" title="Speed"></div><div class="narrate-row narrate-voices"><div class="voiceselect voice-select"><button class="select-toggle" aria-controls="voice-options">
+      <span class="label">Voice:</span> <span class="current-voice">Default</span>
+    </button>
+    <div class="options" id="voice-options" role="listbox"><button data-value="automatic" class="option selected" tabindex="-1" role="option" aria-selected="true">Default</button><button data-value="urn:moz-tts:sapi:Microsoft David - English (United States)?en-US" class="option" tabindex="-1" role="option">Microsoft David - English (United States)</button><button data-value="urn:moz-tts:sapi:Microsoft David Desktop - English (United States)?en-US" class="option" tabindex="-1" role="option">Microsoft David Desktop - English (United States)</button><button data-value="urn:moz-tts:sapi:Microsoft Mark - English (United States)?en-US" class="option" tabindex="-1" role="option">Microsoft Mark - English (United States)</button><button data-value="urn:moz-tts:sapi:Microsoft Zira - English (United States)?en-US" class="option" tabindex="-1" role="option">Microsoft Zira - English (United States)</button><button data-value="urn:moz-tts:sapi:Microsoft Zira Desktop - English (United States)?en-US" class="option" tabindex="-1" role="option">Microsoft Zira Desktop - English (United States)</button></div></div></div></li></ul><button data-buttonid="pocket-button" data-telemetry-id="reader-save-to-pocket" class="toolbar-button pocket-button" aria-labelledby="label-pocket-button" style="background-image: url(&quot;chrome://global/skin/icons/pocket.svg&quot;);"><span class="hover-label" id="label-pocket-button" data-l10n-id="about-reader-toolbar-savetopocket">Save to Pocket</span></button></div>
+      </div>
+    </div>
+
+    <div class="container" style="--line-height: 1.6em;" lang="en-us" dir="ltr">
+      <div class="header reader-header reader-show-element">
+        <a class="domain reader-domain" href="https://www.mongodb.com/resources/products/compatibilities/setting-up-flask-with-mongodb">mongodb.com</a>
+        <div class="domain-border"></div>
+        <h1 class="reader-title">Flask-PyMongo With MongoDB Atlas Guide</h1>
+        <div class="credits reader-credits"></div>
+        <div class="meta-data">
+          <div class="reader-estimated-time" data-l10n-args="{&quot;range&quot;:&quot;9–11&quot;,&quot;rangePlural&quot;:&quot;other&quot;}" data-l10n-id="about-reader-estimated-read-time" dir="ltr">9–11 minutes</div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="content">
+        <div class="moz-reader-content reader-show-element"><div id="readability-page-1" class="page"><div><div><header><div><h2><span>How to Set Up Flask with MongoDB</span></h2></div></header></div><div><p><a target="_target" href="https://flask.palletsprojects.com/en/2.0.x/">Flask</a>
+ is a widely adopted Python framework for building web applications. It 
+allows Python developers to use their preferred language with all of its
+ assets while building scalable and fast-to-start Python web 
+applications. <a target="_target" href="https://www.mongodb.com/cloud/atlas">MongoDB Atlas</a>
+ is MongoDB’s Database-as-a-Service platform that allows developers the 
+flexibility of working with complex data while developing faster than 
+ever. The MongoDB Atlas platform is simple to <a target="_target" href="https://docs.atlas.mongodb.com/getting-started/">set up</a> and scale, making it the perfect database for web applications.</p><p>Integrating
+ the Flask application with MongoDB creates a strong and scalable 
+application stack. In this article, we will guide you through how to 
+connect your Flask application to MongoDB Atlas.</p></div><div><h2 id="pymongo-support-for-flask">PyMongo Support for Flask</h2><p><a target="_target" href="https://docs.mongodb.com/drivers/pymongo/">PyMongo</a>
+ is the official MongoDB Driver for Python. Any Python application can 
+consume the PyMongo driver by importing it and using the MongoClient 
+instance. Flask applications can leverage PyMongo to access our MongoDB 
+Atlas database. </p><p>Since Flask is all about improving the developer 
+experience when developing web applications, the community created a 
+widely adopted helper called <a target="_target" href="https://flask-pymongo.readthedocs.io/en/latest/">Flask-PyMongo</a>
+ which is a wrapper around PyMongo, closely integrated with Flask. This 
+article will use this framework to work with the free tier cluster 
+available in MongoDB Atlas, allowing you to try this stack for free.</p></div><div><h2 id="getting-started-with-flaskpymongo">Getting Started with Flask-PyMongo</h2><p>Mflix application is a known example movie browsing application on <a target="_target" href="https://university.mongodb.com/courses/M220P/about">MongoDB University</a>. The entire sample project is located in our <a target="_target" href="https://github.com/mongodb-developer/flask-pymongo-example">mongodb-developer/flask-pymongo-example</a> github repo.</p><p>You can clone this project and explore the <a target="_target" href="https://github.com/mongodb-developer/flask-pymongo-example/blob/main/README.md">README</a> to set up your demo application or follow this article as we go over the essentials of this project.</p><p>In order to showcase a Flask application example integrated with Atlas, we will use the <strong><a target="_target" href="https://docs.atlas.mongodb.com/sample-data/sample-mflix/">sample_mflix</a></strong> database in the MongoDB Atlas sample dataset. The facade of “mflix” application will use <a target="_target" href="https://flask-pymongo.readthedocs.io/en/latest/">Flask-PyMongo</a> library, exploring the basic Create, Read, Update, and Delete (CRUD) operations together with text search and aggregations.</p><p><img alt="&quot;mflix&quot; application screenshot" src="mongoflask_files/krm8otldb9xqy16up-MflixMain.avif" class="moz-reader-block-img" moz-reader-center="true"></p><p>This project uses a UI layer in a minified<a target="_target" href="https://www.cloudflare.com/en-gb/learning/performance/why-minify-javascript-code/"> ReactJS front end</a> and a Python Flask application to host the front end, and the back-end API to access the movies database.</p><h3 id="project-structure">Project Structure</h3><p>The <code>mflix</code> directory holds the application logic. This includes:</p><ul><li><a target="_target" href="https://github.com/mongodb-developer/flask-pymongo-example/blob/main/mflix/db.py"><code>db.py</code></a>-
+ Location where all database CRUD patterns are exposed as functions. 
+This is also where the Flask-PyMongo helper is used to interact with 
+MongoDB Atlas.</li><li><a target="_target" href="https://github.com/mongodb-developer/flask-pymongo-example/blob/main/mflix/api/movies.py"><code>api/movies.py</code></a>- Location where the web API is exposed to the UI and routes requests to appropriate database functions.</li></ul><p>The main directory holds the following files:</p><ul><li><a target="_target" href="https://github.com/mongodb-developer/flask-pymongo-example/blob/main/run.py"><code>run.py</code></a>- Location where the Flask application is initialized and the config is loaded.</li><li><a target="_target" href="https://github.com/mongodb-developer/flask-pymongo-example/blob/main/sample_ini"><code>sample_ini</code></a>- Location where the connection URI to MongoDB Atlas is configured.</li><li><a target="_target" href="https://github.com/mongodb-developer/flask-pymongo-example/blob/main/requirements.txt"><code>requirements.txt</code></a>- Location where the dependencies this project needs to run are found.</li></ul></div><div><h2 id="how-to-install-flask-with-pymongo">How to Install Flask with PyMongo</h2><p>The project uses a standard pip installation <a target="_target" href="https://pip.pypa.io/en/stable/cli/pip_install/#requirement-specifiers">requirements file</a> that lists the latest version of the needed dependencies:</p><h3 id="requirementstxt">requirements.txt</h3><pre><code><span>Flask</span>
+<span>pymongo</span><span>[srv]</span>
+<span>Flask-PyMongo</span></code></pre><p>Those will allow us to wire the Flask application instance with the PyMongo client using Flask-PyMongo Helper, as placed in the<em> db.py</em> file:</p><pre><code><span>import</span> bson
+
+<span>from</span> flask <span>import</span> current_app, g
+<span>from</span> werkzeug.local <span>import</span> LocalProxy
+<span>from</span> flask_pymongo <span>import</span> PyMongo
+
+<span>from</span> pymongo.errors <span>import</span> DuplicateKeyError, OperationFailure
+<span>from</span> bson.objectid <span>import</span> ObjectId
+<span>from</span> bson.errors <span>import</span> InvalidId
+
+
+<span><span>def</span> <span>get_db</span><span>()</span>:</span>
+    <span>"""
+    Configuration method to return db instance
+    """</span>
+    db = getattr(g, <span>"_database"</span>, <span>None</span>)
+
+    <span>if</span> db <span>is</span> <span>None</span>:
+
+        db = g._database = PyMongo(current_app).db
+       
+    <span>return</span> db
+
+
+<span># Use LocalProxy to read the global db instance with just `db`</span>
+db = LocalProxy(get_db)</code></pre><p>The above code initializes a global “db” object once using the MONGO_URI read from the .ini file:</p><pre><code>config = configparser.ConfigParser()
+config.read(os.path.abspath(os.path.<span>join</span>(<span>".ini"</span>)))
+
+<span>if</span> __name__ == <span>"__main__"</span>:
+    app = create_app()
+    app.config[<span>'DEBUG'</span>] = True
+    app.config[<span>'MONGO_URI'</span>] = config[<span>'PROD'</span>][<span>'DB_URI'</span>]
+
+    app.run()</code></pre><p>We will replace the template sample_ini file with a relevant Atlas cluster connection string:</p><pre><code>[<span>PROD</span>]
+DB_URI = mongodb+srv:<span>//&lt;username&gt;:&lt;password&gt;@&lt;your-atlas-cluster-address&gt;/sample_mflix</span></code></pre><h3 id="getting-your-connection-string">Getting Your Connection String</h3><p>In order to create the client, you will need to pass the <a target="_target" href="https://docs.atlas.mongodb.com/connect-to-database-deployment/">connection string to access your database</a>.</p><p>The connection string can be found in the Atlas UI. The following steps will show you how to get your connection string:</p><ol start="1"><li>Visit the <a target="_target" href="https://cloud.mongodb.com/">Atlas UI</a> and ensure you are logged into your account.</li><li><p>Ensure you are on the Clusters page. It should be the default page but if not, select it from the left-hand menu on the page.</p><p><img alt="Go to your cluster page" src="mongoflask_files/krmbxmx7ho67tkhms-flask-pymongo-1.avif" class="moz-reader-block-img"></p></li></ol><ol start="3"><li><p>Click the “<a target="_target" href="https://docs.atlas.mongodb.com/connect-to-cluster/">Connect” button</a> for the Cluster you created earlier. </p><p><img alt="Click the connect button." src="mongoflask_files/krmc0wta9xhvws09x-flaskpymongo-2.avif" class="moz-reader-block-img"></p></li></ol><ol start="4"><li><p>Select “Connect your application.’”</p><p><img alt="Connect your application." src="mongoflask_files/krmc449gqdzfc9o03-flask-pymongo-3.avif" class="moz-reader-block-img" moz-reader-center="true"></p></li></ol><ol start="5"><li><p>Copy
+ the provided connection string into the create code, substituting any 
+values within &lt;&gt;, such as &lt;password&gt;, with your details.</p><p><img alt="Copy the connection string." src="mongoflask_files/krmc70xayt69c1fky-flask-pymongo-4.avif" class="moz-reader-block-img" moz-reader-center="true"></p></li></ol><h3 id="starting-the-application">Starting the Application</h3><p>Working with virtual environments in Python is a good practice, so for our example application, let’s create one named <em><code>mflix_venv</code>:</em></p><pre><code><span># clone the github repo</span>
+<span>git</span> <span>clone git@github.com:mongodb-developer/flask-pymongo-example.git</span>
+<span>
+# navigate to the project directory</span>
+<span>cd</span> <span>flask-pymongo-example</span>
+<span>
+# create the virtual environment for MFlix</span>
+<span>python3</span> <span>-m venv mflix_venv</span>
+<span>
+# activate the virtual environment</span>
+<span>source</span> <span>mflix_venv/bin/activate</span></code></pre><h3 id="install-dependencies">Install Dependencies:</h3><pre><code><span>python3</span> <span>-m</span> <span>pip</span> <span>install</span> <span>-r</span> <span>requirements</span><span>.txt</span></code></pre><p><strong>Edit sample_ini to have your Atlas connection string:</strong></p><pre><code><span>[PROD]</span>
+<span>DB_URI</span> = mongodb+srv://&lt;username&gt;:&lt;password&gt;@sandbox.abcd.mongodb.net/sample_mflix</code></pre><p><strong>Rename the sample_ini to .ini file:</strong></p><pre><code><span>mv</span> <span>sample_ini</span> <span>.ini</span></code></pre><p><strong>Start the application:</strong></p><pre><code><span>python</span> ./run.py</code></pre><p>This
+ will output console messages about the server startup and its status. 
+Your application should be available via a browser on <a target="_target" href="http://localhost:5000/">http://localhost:5000</a>.</p></div><div><h2 id="how-to-store-data-using-pymongo-and-flask">How to Store Data Using PyMongo and Flask</h2><p>All database access is routed through the global “db” object initialising the PyMongo client. The special variable <a target="_target" href="https://flask.palletsprojects.com/en/2.0.x/api/#flask.g">object “g”</a> is used here to define the PyMongo database in the global application context.</p><pre><code><span>db</span> = g._database = PyMongo(current_app).db</code></pre><p>In MongoDB, information is stored in <a target="_target" href="https://docs.mongodb.com/manual/core/document/#std-label-bson-document-format">BSON Documents</a>.
+ BSON is a binary, JSON-like structure. It supports the same data types 
+as JSON with a few extras such as date, raw binary, as well as more 
+number types such as integer, long, and float.</p><p>A <a target="_target" href="https://docs.mongodb.com/manual/reference/glossary/#std-term-collection">collection</a> is what MongoDB calls a group of documents in one container. Let’s cover the basic Create, Read, Update, and Delete operations.</p><h3 id="create">Create</h3><p>The creation of documents can be done via the collection object and <em><a target="_target" href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.insert_one">insert_one</a></em> <a target="_target" href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.insert_one">method</a>. Let's look at the “add_comment” function:</p><pre><code>def add_comment(movie_id, name, email, <span>comment</span>, <span>date</span>):
+    <span>"""
+    Inserts a comment into the comments collection, with the following fields:
+
+    - "</span><span>name</span><span>"
+    - "</span>email<span>"
+    - "</span>movie_id<span>"
+    - "</span><span>text</span><span>"
+    - "</span><span>date</span><span>"
+
+    Name and email must be retrieved from the "</span><span>user</span><span>" object.
+    """</span>
+
+    comment_doc = { <span>'movie_id'</span> : movie_id, <span>'name'</span> : <span>name</span>, <span>'email'</span> : email,<span>'text'</span> : <span>comment</span>, <span>'date'</span> : <span>date</span>}
+    <span>return</span> db.comments.insert_one(comment_doc)</code></pre><p>The above function receives comment attributes and inserts one document into the comments collection.</p><h3 id="read">Read</h3><p>Reads in MongoDB can be done via a query using <em><a target="_target" href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.find">find</a> or <a target="_target" href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.find_one">find_one</a> </em>which returns a <a target="_target" href="https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html">cursor</a> of documents or a single document respectively. Another option is to use <a target="_target" href="https://pymongo.readthedocs.io/en/stable/examples/aggregation.html">aggregations</a> to perform a more complex search or restructuring of data. For more information on aggregations, see this <a target="_target" href="https://docs.mongodb.com/manual/aggregation/">documentation</a>.</p><p>Our application query can filter movies using both find and aggregate methods:</p><p><strong>Find in <em><code>get_movies</code></em></strong></p><pre><code><span>cursor</span> = db.movies.find(query).sort(sort)</code></pre><p>The
+ find method is searching the movies collection and providing a query 
+criteria and sort document based on user input. See this code in <a target="_target" href="https://github.com/mongodb-developer/flask-pymongo-example/blob/main/mflix/db.py#L166">db.py</a> file.</p><p><strong>Aggregate in <em><code>get_all_genres</code></em></strong></p><pre><code><span><span>def</span> <span>get_all_genres</span><span>()</span>:</span>
+    <span>"""
+    Returns list of all genres in the database.
+    """</span>
+    <span>return</span> list(db.movies.aggregate([
+        {<span>"$unwind"</span>: <span>"$genres"</span>},
+        {<span>"$group"</span>: {<span>"_id"</span>: <span>None</span>, <span>"genres"</span>: {<span>"$addToSet"</span>: <span>"$genres"</span>}}}
+    ]))[<span>0</span>][<span>"genres"</span>]</code></pre><p>The aggregation <a target="_target" href="https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/index.html">unwinds</a> the genres array in each document and calculates a distinct list of possible genres.</p><h3 id="update">Update</h3><p>To update a document, a collection object can use the <a target="_target" href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.update_one">update_one</a> method. In our example, we’re providing a filter and updated values for text and date of a comment:</p><pre><code>def update_comment(comment_id, user_email, text, date):
+    """
+    Updates the <span>comment</span> <span>in</span> the <span>comment</span> collection. Queries <span>for</span> the <span>comment</span>
+    based <span>by</span> <span>both</span> <span>comment</span> _id <span>field</span> <span>as</span> well <span>as</span> the email <span>field</span> <span>to</span> doubly ensure
+    the <span>user</span> has permission <span>to</span> edit this comment.
+    <span>"""
+
+    response = db.comments.update_one(
+        { "</span>comment_id<span>": comment_id },
+        { "</span>$<span>set</span><span>": { "</span><span>text</span> <span>": text, "</span><span>date</span><span>" : date } }
+    )
+
+    return response</span></code></pre><h3 id="delete">Delete</h3><p>To delete a document, a collection object can use the <a target="_target" href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_one">delete_one method</a>. In our example, we’re providing an _id of a comment to delete it:</p><pre><code><span><span>def</span> <span>delete_comment</span><span>(comment_id, user_email)</span>:</span>
+    <span>"""
+    Given a user's email and a comment ID, deletes a comment from the comments
+    collection
+    """</span>
+
+
+    response = db.comments.delete_one( { <span>"_id"</span>: ObjectId(comment_id) } )
+
+    <span>return</span> response</code></pre></div><div><h2><span>What's Next?</span></h2><h4><p>Flask,
+ PyMongo, and MongoDB Atlas offer a great stack to build your web Python
+ applications and easily scale and host them. Using this guide, you can 
+start building your own application today with <a target="_target" href="https://www.mongodb.com/cloud/atlas">MongoDB Atlas</a>.</p></h4></div><div><p></p><h2 id="faqs">FAQs</h2><p></p></div><div><div><h3 id="can-i-use-mongodb-with-flask">Can I use MongoDB with Flask?</h3></div><div><h3 id="what-is-flask-used-for-in-python">What is Flask used for in Python?</h3></div><div><h3 id="how-do-you-use-mongodb-with-python-flask">How do you use MongoDB with Python Flask?</h3></div><div><h3 id="how-do-you-install-flaskpymongo">How do you install Flask-PyMongo?</h3></div><div><h3 id="how-do-you-use-pymongo-in-python">How do you use PyMongo in Python?</h3></div></div></div></div></div>
+      </div>
+
+      <div>
+        <div class="reader-message"></div>
+      </div>
+      <div aria-owns="toolbar"></div>
+    </div>
+  
+
+</body></html>

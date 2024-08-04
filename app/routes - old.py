@@ -31,9 +31,7 @@ def register():
         return redirect(url_for('register'))
     return render_template('register.html')
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+
 
 
 
