@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<body class="bg-dark text-light">
+  <div class="container py-5">
+    <header class="mb-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="https://www.mongodb.com/resources/products/fundamentals/basics" class="text-light">mongodb.com</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Beginners Guide: MongoDB Basics</li>
+        </ol>
+      </nav>
+      <h1 class="display-4 mb-3">Beginners Guide: MongoDB Basics</h1>
+      <p class="text-muted">Estimated read time: 6–8 minutes</p>
+    </header>
+
+    <hr class="my-4">
+
+    <main>
+      <section class="mb-5">
+        <p class="lead">MongoDB is a general-purpose document database designed for modern application development and for the cloud. Its scale-out architecture allows you to meet the increasing demand for your system by adding more nodes to share the load.</p>
+      </section>
+
+      <section class="mb-5">
+        <h2 class="h3 mb-4">Key Aspects of MongoDB</h2>
+        <p>Here are some of the key concepts and terms you will encounter as you learn about MongoDB:</p>
+        <ul class="list-group list-group-flush bg-dark">
+          <li class="list-group-item bg-dark text-light"><a href="#documents" class="text-light">Documents: The records in a document database</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="#collections" class="text-light">Collections: Grouping documents</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="#replica-sets" class="text-light">Replica sets: Ensuring high availability</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="#sharding" class="text-light">Sharding: Scalability to handle massive data growth</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="#indexes" class="text-light">Indexes: Improving query speed</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="#aggregation-pipelines" class="text-light">Aggregation pipelines: Fast data flows</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="#programming-languages" class="text-light">Programming languages: Does MongoDB speak your language?</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="#monitor-mongodb" class="text-light">How to monitor MongoDB</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="#mongodb-cloud" class="text-light">MongoDB cloud</a></li>
+        </ul>
+      </section>
+
+      <section id="documents" class="mb-5">
+        <h3 class="h4 mb-3">Documents: The Records in a document database</h3>
+        <p>MongoDB stores data as JSON documents.</p>
+        <p>The document data model maps naturally to objects in application code, making it simple for developers to learn and use.</p>
+        <p>The fields in a JSON document can vary from document to document. Compare that to a traditional relational database table, where adding a field means adding a column to the database table itself and therefore to every record in the database.</p>
+        <p>Documents can be nested to express hierarchical relationships and store structures such as arrays.</p>
+        <div class="text-center my-4">
+          <img alt="JSON Document" src="mongobasics_files/ku45cnpkie614gf6u-JSON_Document.avif" class="img-fluid">
+        </div>
+        <p>The document model provides flexibility to work with complex, fast-changing, messy data from numerous sources. It enables developers to quickly deliver new application functionality.</p>
+        <p>For faster access internally and to support more data types, MongoDB converts documents into a format called Binary JSON or BSON. But from a developer perspective, MongoDB is a <a href="https://www.mongodb.com/json-and-bson" class="text-light">JSON database</a>.</p>
+      </section>
+
+      <section id="collections" class="mb-5">
+        <h3 class="h4 mb-3">Collections: Grouping Documents</h3>
+        <p>In MongoDB, a collection is a group of documents.</p>
+        <p>If you are familiar with relational databases, you can think of a collection as a table. But collections in MongoDB are far more flexible. Collections do not enforce a schema unless you configure them to, and documents in the same collection can have different fields.</p>
+        <p>Each collection is associated with one MongoDB database. To show which collections are in a particular database, use the command <a href="https://docs.mongodb.com/manual/reference/command/listCollections/#dbcmd.listCollections" class="text-light">listCollections</a>.</p>
+      </section>
+
+      <section id="replica-sets" class="mb-5">
+        <h3 class="h4 mb-3">Replica sets: Ensuring high availability</h3>
+        <p>An important way to ensure high availability is by keeping more than one copy of your data. With MongoDB, high availability is built right into the design.</p>
+        <p>When you <a href="https://www.mongodb.com/basics/create-database" class="text-light">create a database</a> in MongoDB, the system automatically creates at least two more copies of the data, referred to as a <a href="https://www.mongodb.com/basics/replication" class="text-light">replica set</a>. A replica set is a group of at least three MongoDB instances that continuously replicate data between them, offering redundancy and protection against downtime in the face of a system failure or planned maintenance.</p>
+      </section>
+
+      <section id="sharding" class="mb-5">
+        <h3 class="h4 mb-3">Sharding: Scalability to handle massive data growth</h3>
+        <p>A modern data platform needs to be able to handle very fast queries and massive datasets using ever bigger clusters of small machines. Sharding is the term for distributing data intelligently across multiple machines.</p>
+        <p>How does sharding work in MongoDB? MongoDB shards data at the collection level, distributing documents in a collection across the shards in a cluster. The result is a scale-out architecture that supports even the largest applications.</p>
+        <div class="text-center my-4">
+          <img alt="Sharding with MongoDB" src="mongobasics_files/ku45f2vp4rssdyolb-sharding_mongodb.avif" class="img-fluid">
+        </div>
+      </section>
+
+      <section id="indexes" class="mb-5">
+        <h3 class="h4 mb-3">Indexes: Improving query speed</h3>
+        <p>Indexes support the efficient execution of queries. MongoDB offers a variety of different <a href="https://www.mongodb.com/blog/post/performance-best-practices-indexing" class="text-light">indexing strategies</a>, including compound indexes on multiple fields. Chosen carefully, indexes speed up queries because queries scan the <a href="http://www.mongodb.com/basics/mongodb-index/" class="text-light">index</a> instead of reading every document in the collection.</p>
+        <p>There is still work to do to analyze which queries could benefit from adding an index. One tool that does this analysis for you is <a href="https://docs.atlas.mongodb.com/performance-advisor/" class="text-light">Performance Advisor</a>, which analyzes queries and suggests indexes that would improve query performance.</p>
+      </section>
+
+      <section id="aggregation-pipelines" class="mb-5">
+        <h3 class="h4 mb-3">Aggregation pipelines: Fast data flows</h3>
+        <p>MongoDB offers a flexible framework for creating data processing pipelines called aggregation pipelines. It features <a href="https://www.mongodb.com/basics/aggregation-pipeline" class="text-light">dozens of stages and over 150 operators and expressions</a>, enabling you to process, transform, and analyze data of any structure at scale. One recent addition is the <a href="https://docs.mongodb.com/master/reference/operator/aggregation/unionWith/#pipe._S_unionWith" class="text-light">Union stage</a>, which flexibly aggregates results from multiple collections.</p>
+        <div class="text-center my-4">
+          <img alt="MongoDB Aggregation Pipeline" src="mongobasics_files/ku45h8sezb2ourg50-MongoDB_Aggregation_Pipeline.avif" class="img-fluid">
+        </div>
+      </section>
+
+      <section id="programming-languages" class="mb-5">
+        <h3 class="h4 mb-3">Programming languages: Does MongoDB speak your language?</h3>
+        <p>What languages can you use with MongoDB? The <a href="https://docs.mongodb.com/drivers/" class="text-light">list of supported languages</a> includes Node.js, C, C++, C#, Go, Java, Perl, PHP, Python, Ruby, Rust, Scala, Swift and many more. The library for each language is actively maintained, which means that it is updated with new <a href="https://www.mongodb.com/features" class="text-light">features</a>, bug fixes, security patches, and performance enhancements.</p>
+      </section>
+
+      <section id="monitor-mongodb" class="mb-5">
+        <h3 class="h4 mb-3">How to monitor MongoDB</h3>
+        <p>You can monitor your cluster's health and performance by checking instance status, cluster operations and connections metrics, hardware metrics, and more with just <a href="https://www.mongodb.com/basics/how-to-monitor-mongodb-and-what-metrics-to-monitor" class="text-light">a few utilities and commands</a>. Monitoring can help you detect and react to real-time issues before they become significant.</p>
+      </section>
+
+      <section id="mongodb-cloud" class="mb-5">
+        <h3 class="h4 mb-3">MongoDB cloud</h3>
+        <p>MongoDB started out as an open source database and it still can be used that way through the MongoDB Community Edition.</p>
+        <p>In MongoDB Enterprise Edition, advanced features are available through a commercial license.</p>
+        <p>MongoDB Atlas is a database-as-a-service (DBaaS) version of MongoDB Enterprise Edition that is offered on all public clouds.</p>
+        <p>MongoDB Atlas has been extended in a variety of ways with built-in, tightly integrated functionality such as Atlas Search, Atlas Vector Search, Atlas Data Lake, Atlas Device Sync, Atlas Device SDKs, and other advanced features for geo-locating data and making backups.</p>
+      </section>
+
+      <section class="mb-5">
+        <h2 class="h3 mb-4">Learn More: Beyond the Basics</h2>
+        <p>Now that you're versed in some of the terminology you'll encounter when learning about MongoDB, why not get started right away using <a href="https://www.mongodb.com/cloud/atlas/register" class="text-light">MongoDB Atlas</a>? While you're at it, join the <a href="https://www.mongodb.com/community" class="text-light">MongoDB community</a>, which offers everything from forums to webinars to free courses from <a href="https://university.mongodb.com/" class="text-light">MongoDB University</a>. A good place to start is the introductory <a href="https://university.mongodb.com/courses/M001/about" class="text-light">M001: MongoDB Basics</a> course.</p>
+        <p>MongoDB is a general-purpose database, with a wide variety of use cases. If you're still wondering if MongoDB is the right choice for your application, check out the <a href="https://www.mongodb.com/why-use-mongodb" class="text-light">Why Use MongoDB?</a> article.</p>
+      </section>
+
+      <section>
+        <h2 class="h3 mb-4">Related content: MongoDB basics</h2>
+        <p>Learn more in our MongoDB basics series:</p>
+        <ul class="list-group list-group-flush bg-dark">
+          <li class="list-group-item bg-dark text-light">How to <a href="https://www.mongodb.com/basics/create-database" class="text-light">create a database in MongoDB</a></li>
+          <li class="list-group-item bg-dark text-light"><a href="https://www.mongodb.com/basics/embedded-mongodb" class="text-light">Embedding documents in MongoDB</a></li>
+          <li class="list-group-item bg-dark text-light">What is <a href="https://www.mongodb.com/basics/replication" class="text-light">replication in MongoDB?</a></li>
+          <li class="list-group-item bg-dark text-light">Using <a href="https://www.mongodb.com/basics/transactions" class="text-light">ACID transactions in MongoDB</a></li>
+          <li class="list-group-item bg-dark text-light">Basic <a href="https://www.mongodb.com/basics/examples" class="text-light">MongoDB examples</a></li>
+          <li class="list-group-item bg-dark text-light">Learn how MongoDB can increase your <a href="http://www.mongodb.com/basics/business-agility/" class="text-light">business agility</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+</body>
+{% endblock %}
