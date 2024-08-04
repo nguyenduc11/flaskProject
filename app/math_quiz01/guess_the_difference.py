@@ -1,9 +1,9 @@
-from app.guess_sum import guess_sum
-from flask import render_template, request, redirect, url_for
-import plotly.graph_objects as go
-import plotly.io as pio
 import random
-class GuessSumApp:
+
+from plotly import graph_objects as go, io as pio
+
+
+class GuessDifferenceApp:
     def __init__(self):
         self.correct_sum = None
         self.number1 = None
@@ -12,14 +12,14 @@ class GuessSumApp:
 
     def start_new_round(self):
         while True:
-            self.number1 = random.randint(1, 9)
+            self.number1 = random.randint(11, 20)
             self.number2 = random.randint(1, 9)
-            if self.number1 + self.number2 > 10:
+            if self.number1 - self.number2 < 10:
                 break
         self.correct_sum = None
 
     def check_sum(self, user_guess):
-        correct_sum = self.number1 + self.number2
+        correct_sum = self.number1 - self.number2
         if user_guess == correct_sum:
             self.correct_sum = correct_sum
             return True, correct_sum
@@ -28,7 +28,7 @@ class GuessSumApp:
 
     def generate_chart(self):
         numbers = [self.number1, self.number2]
-        labels = ['Number 1', 'Number 2']
+        labels = ['Số bị trừ', 'Số trừ']
         colors = ['#3498db', '#2ecc71']  # Blue, Green
 
         if self.correct_sum is not None:
@@ -77,41 +77,3 @@ class GuessSumApp:
         fig = go.Figure(data=bars, layout=layout)
         plot_html = pio.to_html(fig, full_html=False)
         return plot_html
-
-
-app_logic = GuessSumApp()
-
-@guess_sum.route('/guest-the-sum', methods=["GET", "POST"])
-def guest_sum():
-    if request.method == "POST":
-        if 'new_round' in request.form:
-            app_logic.start_new_round()
-            plot_html = app_logic.generate_chart()
-            return render_template("guest-the-sum.html", number1=app_logic.number1, number2=app_logic.number2,
-                                   plot_html=plot_html)
-
-        user_guess = request.form.get("sum")
-        if user_guess:
-            try:
-                user_guess = int(user_guess)
-                correct, correct_sum = app_logic.check_sum(user_guess)
-                if correct:
-                    plot_html = app_logic.generate_chart()
-                    message = f"OK. Tổng là {correct_sum}."
-                    return render_template("guest-the-sum.html", number1=app_logic.number1, number2=app_logic.number2,
-                                           message=message, plot_html=plot_html, show_new_round=True)
-                else:  # wrong answer
-                    message = f"Sai. Kết quả đúng là {correct_sum}."
-                    plot_html = app_logic.generate_chart()
-                    return render_template("guest-the-sum.html", number1=app_logic.number1, number2=app_logic.number2,
-                                           message=message, plot_html=plot_html)
-            except ValueError:
-                message = "Invalid input. Please enter a valid number."
-                plot_html = app_logic.generate_chart()
-                return render_template("guest-the-sum.html", number1=app_logic.number1, number2=app_logic.number2,
-                                       message=message, plot_html=plot_html)
-
-    app_logic.start_new_round()
-    plot_html = app_logic.generate_chart()
-    return render_template("guest-the-sum.html", number1=app_logic.number1, number2=app_logic.number2,
-                           plot_html=plot_html)

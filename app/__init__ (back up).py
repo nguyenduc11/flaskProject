@@ -28,7 +28,7 @@ def create_app():
     from app.to_do_list import to_do_list as to_do_list_blueprint
     app.register_blueprint(to_do_list_blueprint, url_prefix='/todo')
 
-    from app.math_quiz01 import math_quiz01 as math_quiz01_blueprint
+    from app.math_quiz03 import math_quiz03 as math_quiz01_blueprint
     app.register_blueprint(math_quiz01_blueprint)
 
     from app.auth import auth as auth_blueprint
