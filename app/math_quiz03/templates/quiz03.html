@@ -1,48 +1,49 @@
 {% extends 'base.html' %}
 
-{% block title %}Math Quiz 01{% endblock %}
+{% block title %}TEST APP{% endblock %}
 {% block content %}
-    <div class="container mx-auto px-4 py-5 max-w-2xl">
-        <h1 class="display-5 fw-bold text-center text-primary mb-4">Math Quiz</h1>
+<div class="container mx-auto px-4 py-5 max-w-2xl">
+    <h1 class="display-5 fw-bold text-center text-primary mb-4">Tính Hiệu 2 Số</h1>
 
-        {% if questions %}
-        <form method="post" action="/quiz01" class="bg-light shadow rounded p-4 mb-4">
-            {% for question in questions %}
-            <div class="mb-3 row">
-                <label class="col-sm-6 col-form-label fw-bold" for="answer{{ loop.index }}">
-                    {{ question }}
-                </label>
-                <div class="col-sm-6">
-                    <input class="form-control"
-                           id="answer{{ loop.index }}" type="number" name="answer{{ loop.index }}" required>
-                </div>
+    {% if questions %}
+    <form method="post" action="{{ url_for('math_quiz03.math_quiz03') }}" class="bg-light shadow rounded p-4 mb-4">
+        {% for question in questions %}
+        <div class="mb-3 row">
+            <label class="col-sm-6 col-form-label fw-bold" for="answer{{ loop.index }}">
+                {{ question }}
+            </label>
+            <div class="col-sm-6">
+                <input class="form-control"
+                       id="answer{{ loop.index }}" type="number" name="answer{{ loop.index }}" required>
             </div>
-            {% endfor %}
-            <div class="d-flex justify-content-between">
-                <button class="btn btn-primary" type="submit" name="submit">
-                    Kiểm tra
-                </button>
-                <button class="btn btn-danger" type="submit" name="restart">
-                    Vòng mới
-                </button>
-            </div>
-        </form>
-        {% elif score is defined and correct_answers is defined %}
-        <div class="bg-light shadow rounded p-4 mb-4">
-            <p class="h5 fw-bold mb-3">Your score: {{ score }}</p>
-            <p class="fw-bold mb-2">Correct answers:</p>
-            <ul class="list-unstyled ps-3 mb-3">
-                {% for answer in correct_answers %}
-                <li class="mb-1">{{ answer }}</li>
-                {% endfor %}
-            </ul>
-            <a href="{{ url_for('math_quiz01.math_quiz01') }}"
-               class="btn btn-success">
-                Vòng mới
-            </a>
         </div>
-        {% else %}
-        <p class="text-center text-muted">Loading...</p>
-        {% endif %}
+        {% endfor %}
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-primary" type="submit" name="submit">
+                Kiểm tra
+            </button>
+<!--            <button class="btn btn-danger" type="submit" name="restart">-->
+<!--                Vòng mới-->
+<!--            </button>-->
+        </div>
+    </form>
+    {% elif score is defined and correct_answers is defined %}
+    <div class="bg-light shadow rounded p-4 mb-4">
+        <p class="h5 fw-bold mb-3">Your score: {{ score }}</p>
+        <p class="fw-bold mb-2">Correct answers:</p>
+        <ul class="list-unstyled ps-3 mb-3">
+            {% for answer in correct_answers %}
+            <li class="mb-1">{{ answer }}</li>
+            {% endfor %}
+
+        </ul>
+<!--        <a href="{{ url_for('math_quiz03.math_quiz03') }}"-->
+<!--           class="btn btn-success">-->
+<!--            Vòng mới-->
+<!--        </a>-->
     </div>
+    {% else %}
+    <p class="text-center text-muted">Loading...</p>
+    {% endif %}
+</div>
 {% endblock %}

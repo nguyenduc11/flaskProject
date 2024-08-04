@@ -41,7 +41,8 @@ def create_app():
     app.register_blueprint(math_quiz02_blueprint, url_prefix='/math')
 
     from app.math_quiz03 import math_quiz03 as math_quiz03_blueprint
-    app.register_blueprint(math_quiz03_blueprint)
+    app.register_blueprint(math_quiz03_blueprint, url_prefix='/math')
+
 
     from app.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')

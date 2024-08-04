@@ -1,72 +1,46 @@
+from flask import render_template, request, redirect, url_for, session
 from app.math_quiz03 import math_quiz03
-from flask import render_template, request, redirect, url_for
-import random
+from app.math_quiz03.quiz03_app import TestApp
+from app.math_quiz03.generate_question import generate_questions
+from app.math_quiz03.get_answers import get_answers
+from app.math_quiz03.get_correct_answers import get_correct_answers
+from app.math_quiz03.check_user_score import check_user_score
+
+app_logic = TestApp()
 
 
 @math_quiz03.route('/quiz03', methods=['GET', 'POST'])
 def math_quiz03():
-    if request.method == 'POST':
-        if 'submit' in request.form:
-            user_answers = []
-            for i in range(1, 11):
-                answer_key = f'answer{i}'
-                if answer_key in request.form:
-                    user_answers.append(int(request.form[answer_key]))
-                else:
-                    user_answers.append(0)
-            score = calculate_score(user_answers)
-            correct_answers = get_correct_answers(user_answers)
-            return render_template('quiz03.html', score=score, correct_answers=correct_answers)
-        elif 'restart' in request.form:
-            return redirect(url_for('math_quiz03.math_quiz03'))
-    else:
-        questions = generate_questions()
+    if request.method == "GET":
+        # Start a new round and store list1 and list2 in session
+        app_logic.start_new_round()
+        session['list1'] = app_logic.list1
+        session['list2'] = app_logic.list2
+
+        questions = generate_questions(session['list1'], session['list2'])
         return render_template('quiz03.html', questions=questions)
 
+    elif request.method == 'POST':
+        if 'submit' in request.form:
+            # Retrieve list1 and list2 from session
+            list1 = session.get('list1')
+            list2 = session.get('list2')
 
-def calculate_score(user_answers):
-    """
-        Calculates the user's score based on their answers.
+            original_questions = generate_questions(list1, list2)
+            # Get user answers
+            user_guess = get_answers(request.form)
 
-        Args:
-            user_answers (list): A list of the user's answers for each question.
+            score = check_user_score(list1, list2, user_guess)
+            correct_answers = get_correct_answers(list1, list2)
 
-        Returns:
-            int: The user's score.
-        """
-    correct_answers = get_correct_answers(user_answers)
-    return len(correct_answers)
+            return render_template('result.html',
+                                   original_questions=original_questions,
+                                   user_guess=user_guess,
+                                   correct_answers=correct_answers,
+                                   score=score)
 
-def get_correct_answers(user_answers):
-    """
-    Generates the correct answers for each question.
-
-    Args:
-        user_answers (list): A list of the user's answers for each question.
-
-    Returns:
-        list: A list of the correct answers for each question.
-    """
-    correct_answers = []
-    for i in range(1, 11):
-        num1 = random.randint(10, 20)
-        num2 = random.randint(1, 9)
-        correct_answer = num1 - num2
-        correct_answers.append(correct_answer)
-    return correct_answers
-
-
-def generate_questions():
-    """
-    Generates a list of 10 math questions.
-
-    Returns:
-        list: A list of 10 math questions.
-    """
-    questions = []
-    for i in range(1, 11):
-        num1 = random.randint(10, 20)
-        num2 = random.randint(1, 9)
-        question = f"{num1} - {num2} = ?"
-        questions.append(question)
-    return questions
+    elif 'restart' in request.form:
+        app_logic.start_new_round()
+        session['list1'] = app_logic.list1
+        session['list2'] = app_logic.list2
+        return redirect(url_for('math_quiz03.math_quiz03'))
