@@ -5,6 +5,8 @@ from app.math_quiz03.generate_question import generate_questions
 from app.math_quiz03.get_answers import get_answers
 from app.math_quiz03.get_correct_answers import get_correct_answers
 from app.math_quiz03.check_user_score import check_user_score
+from app import db  # Import the global db object
+from datetime import datetime
 
 app_logic = TestApp()
 
@@ -32,6 +34,17 @@ def math_quiz03():
 
             score = check_user_score(list1, list2, user_guess)
             correct_answers = get_correct_answers(list1, list2)
+
+            timestamp = datetime.now()
+            # Add data to database
+            quiz_result = {
+                "original_questions": original_questions,
+                "user_guess": user_guess,
+                "correct_answers": correct_answers,
+                "score": score,
+                "timestamp": timestamp
+            }
+            db.math_quiz03.insert_one(quiz_result)
 
             return render_template('result.html',
                                    original_questions=original_questions,
