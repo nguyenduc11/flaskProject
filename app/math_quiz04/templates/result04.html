@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Math Result 04{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <h1>Tổng của 2 số hạng</h1>
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Câu hỏi</h5>
+                </div>
+                <div class="card-body">
+                    {% if original_questions %}
+                    <ul class="list-unstyled striped-list">
+                        {% for original_question in original_questions %}
+                        <li class="mb-2">{{ original_question }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No original questions available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Cục Bột đoán</h5>
+                </div>
+                <div class="card-body">
+                    {% if user_guess %}
+                    <ul class="list-unstyled striped-list">
+                        {% for item in user_guess %}
+                        <li class="mb-2">{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No user guesses available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Kết quả đúng</h5>
+                </div>
+                <div class="card-body">
+                    {% if correct_answers %}
+                    <ul class="list-unstyled striped-list">
+                        {% for correct_answer in correct_answers %}
+                        <li class="mb-2">{{ correct_answer }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No correct answers available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <h3>Điểm số</h3>
+            {% if score is defined %}
+            <h2 class="display-4">{{ score }}</h2>
+            {% if score == 10 %}
+            <p>Giỏi lắm Cục Bột Yêu</p>
+            {% endif %}
+            {% else %}
+            <p class="text-muted">Score not available.</p>
+            {% endif %}
+            <a href="{{ url_for('math_quiz04.math_quiz04_route') }}" class="btn btn-primary mt-3">Vòng mới</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .striped-list li:nth-child(odd) {
+        background-color: #f8f9fa;
+    }
+    .striped-list li {
+        padding: 8px;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

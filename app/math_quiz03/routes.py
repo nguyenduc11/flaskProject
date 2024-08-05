@@ -58,9 +58,9 @@ def math_quiz03():
                 "location_data": location_data,
                 "user_agent": user_agent
             }
-            db.math_quiz03.insert_one(quiz_result)
+            db.math_quiz04.insert_one(quiz_result)
 
-            return render_template('result.html',
+            return render_template('result03.html',
                                    original_questions=original_questions,
                                    user_guess=user_guess,
                                    correct_answers=correct_answers,

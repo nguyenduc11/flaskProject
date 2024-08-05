@@ -5,7 +5,7 @@ from app import db  # Import the global db object
 from bson.json_util import dumps
 
 from app.math_result import math_result
-@math_result.route('/all', methods=['GET'])
+@math_result.route('/quiz03', methods=['GET'])
 def get_math_result():
     result = list(db.math_quiz03.find())
     # print(f'result {result}')
