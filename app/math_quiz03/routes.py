@@ -1,4 +1,7 @@
 from flask import render_template, request, redirect, url_for, session
+import requests
+import json
+
 from app.math_quiz03 import math_quiz03
 from app.math_quiz03.quiz03_app import TestApp
 from app.math_quiz03.generate_question import generate_questions
@@ -34,7 +37,16 @@ def math_quiz03():
 
             score = check_user_score(list1, list2, user_guess)
             correct_answers = get_correct_answers(list1, list2)
+            # Get user information
+            # Get the user's IP address
+            user_ip = request.remote_addr
 
+            # Get the user's location based on their IP address
+            location_data = get_location_data(user_ip)
+
+            # Get the user's browser information
+            user_agent = request.headers.get('User-Agent')
+            # Get timestamp
             timestamp = datetime.now()
             # Add data to database
             quiz_result = {
@@ -42,7 +54,9 @@ def math_quiz03():
                 "user_guess": user_guess,
                 "correct_answers": correct_answers,
                 "score": score,
-                "timestamp": timestamp
+                "timestamp": timestamp,
+                "location_data": location_data,
+                "user_agent": user_agent
             }
             db.math_quiz03.insert_one(quiz_result)
 
@@ -57,3 +71,15 @@ def math_quiz03():
         session['list1'] = app_logic.list1
         session['list2'] = app_logic.list2
         return redirect(url_for('math_quiz03.math_quiz03'))
+
+
+
+def get_location_data(ip_address):
+    """
+    Function to get the location data based on the IP address.
+    """
+    url = f"http://ipinfo.io/{ip_address}/json"
+    response = requests.get(url)
+    location_data = json.loads(response.text)
+    return location_data
+
