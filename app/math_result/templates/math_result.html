@@ -3,96 +3,70 @@
 {% block title %}Math Result 03{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-2">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h5 class="card-title">Math Result</h5>
-                </div>
+<div class="container py-5">
+    {% if data %}
+    {% for item in data %}
+    <div class="row mb-4">
+        <div class="col-md">
+            <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    {% if original_questions %}
-                    <ul class="list-unstyled striped-list">
-                        {% for original_question in original_questions %}
-                        <li class="mb-2">{{ original_question }}</li>
+                    <h5 class="card-title text-primary">Câu hỏi</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for original_question in item['original_questions'] %}
+                        <li class="list-group-item">{{ original_question }}</li>
                         {% endfor %}
                     </ul>
-                    {% else %}
-                    <p class="text-muted">No original questions available.</p>
-                    {% endif %}
                 </div>
             </div>
         </div>
-
-        <div class="col-md-2">
-            {% if data %}
-            <p>{{ data[0] }}</p>
-            <p>_id: {{ data[0]['_id']['$oid'] }}</p>
-            <ul>
-                {% for item in data %}
-                <li>ID: {{ item['_id']['$oid'] }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+        <div class="col-md">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-info">Cục Bột trả lời</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for guess in item['user_guess'] %}
+                        <li class="list-group-item">{{ guess }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
-
-        <div class="col-md-2">
-            {% if data %}
-            <ul>
-                {% for item in data %}
-                {% for original_question in item['original_questions'] %}
-                <li>{{ original_question }}</li>
-                {% endfor %}
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-        <div class="col-md-2">
-            {% if data %}
-            <ul>
-                {% for item in data %}
-                {% for guess in item['user_guess'] %}
-                <li>{{ guess}}</li>
-                {% endfor %}
-                {% endfor %}
-            </ul>
-            {% endif %}
+        <div class="col-md">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Đáp án</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for correct_answer in item['correct_answers'] %}
+                        <li class="list-group-item">{{ correct_answer }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="col-md-2">
-            {% if data %}
-            <ul>
-                {% for item in data %}
-                {% for correct_answer in item['correct_answers'] %}
-                <li>{{ correct_answer}}</li>
-                {% endfor %}
-                {% endfor %}
-            </ul>
-            {% endif %}
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-warning">Score</h5>
+                    <p class="card-text display-4 text-center">{{ item['score'] }}</p>
+                </div>
+            </div>
         </div>
-                <div class="col-md-2">
-            {% if data %}
-            <ul>
-                {% for item in data %}
-                <li>score: {{ item['score'] }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
-
-
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-12 text-center">
-            <h3>Điểm số</h3>
-            {% if score is defined %}
-            <h2 class="display-4">{{ score }}</h2>
-            {% else %}
-            <p class="text-muted">Score not available.</p>
-            {% endif %}
-            <a href="{{ url_for('math_quiz03.math_quiz03') }}" class="btn btn-primary mt-3">Vòng mới</a>
+        <div class="col-md-2">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Ngày làm bài</h5>
+                    <p class="card-text text-center">
+                        {{ item['timestamp']['$date'] }}
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        No data available.
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
-

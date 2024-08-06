@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Math Result 03{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+
+
+        <!--        <div class="col-md-3">-->
+        <!--            {% if data %}-->
+        <!--            <p>{{ data[0] }}</p>-->
+        <!--            <p>_id: {{ data[0]['_id']['$oid'] }}</p>-->
+        <!--            <ul>-->
+        <!--                {% for item in data %}-->
+        <!--                <li>ID: {{ item['_id']['$oid'] }}</li>-->
+        <!--                {% endfor %}-->
+        <!--            </ul>-->
+        <!--            {% endif %}-->
+        <!--        </div>-->
+
+        <div class="col-md-3">
+            {% if data %}
+            <ul>
+                {% for item in data %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Questions</h5>
+                        {% for original_question in item['original_questions'] %}
+                        <li> {{ original_question }}</li>
+                        {% endfor %}
+
+                    </div>
+
+
+                </div>
+
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            {% if data %}
+            <ul>
+                {% for item in data %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">User Guess</h5>
+                        {% for guess in item['user_guess'] %}
+                        <li>{{ guess}}</li>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            {% if data %}
+            <ul>
+                {% for item in data %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Correct Answer</h5>
+                        {% for correct_answer in item['correct_answers'] %}
+                        <li>{{ correct_answer}}</li>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            {% if data %}
+            <ul>
+                {% for item in data %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Score</h5>
+                        <li>{{ item['score'] }}</li>
+
+
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </ul>
+            {% endif %}
+        </div>
+
+
+    </div>
+
+</div>
+
+
+{% endblock %}
+
