@@ -11,5 +11,7 @@ def get_math_result():
     # print(f'result {result}')
     # Convert the cursor object to a list of dictionaries
     data = json.loads(dumps(list(result)))
-    return jsonify(data)
-    # return render_template('math_result.html', result=result)
+    print(f'data {data}')
+    print(type(data))
+    # return jsonify(data)
+    return render_template('math_result.html', data=data)

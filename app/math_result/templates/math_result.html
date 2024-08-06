@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="card mb-3">
                 <div class="card-header">
                     <h5 class="card-title">Math Result</h5>
@@ -22,6 +22,61 @@
                     {% endif %}
                 </div>
             </div>
+        </div>
+
+        <div class="col-md-2">
+            {% if data %}
+            <p>{{ data[0] }}</p>
+            <p>_id: {{ data[0]['_id']['$oid'] }}</p>
+            <ul>
+                {% for item in data %}
+                <li>ID: {{ item['_id']['$oid'] }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+
+        <div class="col-md-2">
+            {% if data %}
+            <ul>
+                {% for item in data %}
+                {% for original_question in item['original_questions'] %}
+                <li>{{ original_question }}</li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="col-md-2">
+            {% if data %}
+            <ul>
+                {% for item in data %}
+                {% for guess in item['user_guess'] %}
+                <li>{{ guess}}</li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="col-md-2">
+            {% if data %}
+            <ul>
+                {% for item in data %}
+                {% for correct_answer in item['correct_answers'] %}
+                <li>{{ correct_answer}}</li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+                <div class="col-md-2">
+            {% if data %}
+            <ul>
+                {% for item in data %}
+                <li>score: {{ item['score'] }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
 
 
