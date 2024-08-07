@@ -68,6 +68,9 @@
             <h3>Điểm số</h3>
             {% if score is defined %}
             <h2 class="display-4">{{ score }}</h2>
+            {% if score == 10 %}
+            <p>Giỏi lắm Cục Bột Yêu</p>
+            {% endif %}
             {% else %}
             <p class="text-muted">Score not available.</p>
             {% endif %}
