@@ -1,18 +1,30 @@
 from flask import render_template, request, redirect, url_for, session
 import requests
 import json
+import random
 from datetime import datetime
 
 from app.math_quiz04 import math_quiz04
-from app.math_quiz04.quiz04_app import Quiz04App
-from app.math_quiz04.generate_question import generate_questions
-from app.math_quiz04.get_answers import get_answers
-from app.math_quiz04.get_correct_answers import get_correct_answers
-from app.math_quiz04.check_user_score import check_user_score
 from app import db
 
-app_logic = Quiz04App()
+class QuizApp:
+    def __init__(self):
+        self.list1 = []
+        self.list2 = []
 
+    def start_new_round(self):
+        self.list1 = []
+        self.list2 = []
+        while len(self.list1) < 10 or len(self.list2) < 10:
+            x = random.randint(11, 99)
+            y = x % 10
+            a = random.randint(11, 99)
+            b = a % 10
+            if y + b > 9 and x + a < 101:
+                self.list1.append(x)
+                self.list2.append(a)
+
+app_logic = QuizApp()
 
 @math_quiz04.route('/quiz04', methods=['GET', 'POST'])
 def math_quiz04_route():
@@ -24,13 +36,11 @@ def math_quiz04_route():
         elif 'restart' in request.form:
             return handle_restart_request()
 
-
 def handle_get_request():
     app_logic.start_new_round()
     session['list1'], session['list2'] = app_logic.list1, app_logic.list2
     questions = generate_questions(session['list1'], session['list2'])
     return render_template('quiz04.html', questions=questions)
-
 
 def handle_submit_request():
     list1, list2 = session.get('list1'), session.get('list2')
@@ -59,24 +69,29 @@ def handle_submit_request():
                            correct_answers=correct_answers,
                            score=score)
 
-
 def handle_restart_request():
     app_logic.start_new_round()
     session['list1'], session['list2'] = app_logic.list1, app_logic.list2
     return redirect(url_for('math_quiz04.math_quiz04_route'))
-
 
 def get_location_data(ip_address):
     url = f"http://ipinfo.io/{ip_address}/json"
     response = requests.get(url)
     return json.loads(response.text)
 
-
 def check_user_marks(list1, list2, user_answers):
-    user_marks = []
-    for i in range(len(list1)):
-        if user_answers[i] == list1[i] + list2[i]:
-            user_marks.append(True)
-        else:
-            user_marks.append(False)
-    return user_marks
+    return [user_answers[i] == list1[i] + list2[i] for i in range(len(list1))]
+
+def check_user_score(list1, list2, user_answers):
+    return sum(1 for i in range(len(list1)) if user_answers[i] == list1[i] + list2[i])
+
+def generate_questions(list1, list2):
+    return [f"{num1} + {num2} = ?" for num1, num2 in zip(list1, list2)]
+
+def get_answers(request_form):
+    return [int(value) for key, value in request_form.items() if key.startswith('answer') and value.isdigit()]
+
+def get_correct_answers(list1, list2):
+    if len(list1) != len(list2):
+        raise ValueError("Input lists must have the same length.")
+    return [num1 + num2 for num1, num2 in zip(list1, list2)]
