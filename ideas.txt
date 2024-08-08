@@ -1,0 +1,4 @@
+thống kê mỗi ngày làm bao nhiêu bài
+thống kê mỗi bài làm bao lâu
+thống kê score distribution
+thống kê với column chart

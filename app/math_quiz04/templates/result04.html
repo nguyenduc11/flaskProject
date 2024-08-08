@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <div class="row">
         <h1>Tổng của 2 số hạng</h1>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card mb-3">
                 <div class="card-header">
                     <h5 class="card-title">Câu hỏi</h5>
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card mb-3">
                 <div class="card-header">
                     <h5 class="card-title">Cục Bột đoán</h5>
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card mb-3">
                 <div class="card-header">
                     <h5 class="card-title">Kết quả đúng</h5>
@@ -54,6 +54,29 @@
                     <ul class="list-unstyled striped-list">
                         {% for correct_answer in correct_answers %}
                         <li class="mb-2">{{ correct_answer }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No correct answers available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">Chấm điểm</h5>
+                </div>
+                <div class="card-body">
+                    {% if user_marks %}
+                    <ul class="list-unstyled striped-list">
+                        {% for user_mark in user_marks %}
+                        {% if user_mark == true %}
+                        <li class="mb-2 text-success">Đúng</li>
+                        {% else %}
+                        <li class="mb-2 text-danger">Sai</li>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                     {% else %}

@@ -36,6 +36,8 @@ def math_quiz03():
             user_guess = get_answers(request.form)
 
             score = check_user_score(list1, list2, user_guess)
+            user_marks = check_user_marks(list1, list2, user_guess)
+
             correct_answers = get_correct_answers(list1, list2)
             # Get user information
             # Get the user's IP address
@@ -52,6 +54,7 @@ def math_quiz03():
             quiz_result = {
                 "original_questions": original_questions,
                 "user_guess": user_guess,
+                "user_marks": user_marks,
                 "correct_answers": correct_answers,
                 "score": score,
                 "timestamp": timestamp,
@@ -63,6 +66,7 @@ def math_quiz03():
             return render_template('result03.html',
                                    original_questions=original_questions,
                                    user_guess=user_guess,
+                                   user_marks=user_marks,
                                    correct_answers=correct_answers,
                                    score=score)
 
@@ -71,7 +75,6 @@ def math_quiz03():
         session['list1'] = app_logic.list1
         session['list2'] = app_logic.list2
         return redirect(url_for('math_quiz03.math_quiz03'))
-
 
 
 def get_location_data(ip_address):
@@ -83,3 +86,12 @@ def get_location_data(ip_address):
     location_data = json.loads(response.text)
     return location_data
 
+
+def check_user_marks(list1, list2, user_answers):
+    user_marks = []
+    for i in range(len(list1)):
+        if user_answers[i] == list1[i] - list2[i]:
+            user_marks.append(True)
+        else:
+            user_marks.append(False)
+    return user_marks

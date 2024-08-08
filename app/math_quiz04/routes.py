@@ -38,11 +38,13 @@ def handle_submit_request():
     user_guess = get_answers(request.form)
     score = check_user_score(list1, list2, user_guess)
     correct_answers = get_correct_answers(list1, list2)
+    user_marks = check_user_marks(list1, list2, user_guess)
 
     quiz_result = {
         "original_questions": original_questions,
         "user_guess": user_guess,
         "correct_answers": correct_answers,
+        "user_marks": user_marks,
         "score": score,
         "timestamp": datetime.now(),
         "location_data": get_location_data(request.remote_addr),
@@ -53,6 +55,7 @@ def handle_submit_request():
     return render_template('result04.html',
                            original_questions=original_questions,
                            user_guess=user_guess,
+                           user_marks=user_marks,
                            correct_answers=correct_answers,
                            score=score)
 
@@ -67,3 +70,13 @@ def get_location_data(ip_address):
     url = f"http://ipinfo.io/{ip_address}/json"
     response = requests.get(url)
     return json.loads(response.text)
+
+
+def check_user_marks(list1, list2, user_answers):
+    user_marks = []
+    for i in range(len(list1)):
+        if user_answers[i] == list1[i] + list2[i]:
+            user_marks.append(True)
+        else:
+            user_marks.append(False)
+    return user_marks

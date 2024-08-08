@@ -5,9 +5,9 @@
 {% block content %}
 <div class="container py-5">
     {% if data %}
-    {% for item in data %}
+    {% for item in data|reverse %}
     <div class="row mb-4">
-        <div class="col-md">
+        <div class="col-md-2">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title text-primary">Câu hỏi</h5>
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md">
+        <div class="col-md-2">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title text-info">Cục Bột trả lời</h5>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md">
+        <div class="col-md-2">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title text-success">Đáp án</h5>
@@ -46,17 +46,34 @@
         <div class="col-md-2">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title text-warning">Score</h5>
-                    <p class="card-text display-4 text-center">{{ item['score'] }}</p>
+                    <h5 class="card-title text-warning">Chấm Điểm</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for user_mark in item['user_marks'] %}
+                        {% if user_mark == true %}
+                        <li class="list-group-item text-success">Đúng</li>
+                        {% else %}
+                        <li class="list-group-item text-danger">Sai</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
         <div class="col-md-2">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
+                    <h5 class="card-title text-warning">Điểm số</h5>
+                    <p class="card-text display-4 text-center">{{ item['score'] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
                     <h5 class="card-title text-muted">Ngày làm bài</h5>
                     <p class="card-text text-center">
-                        {{ item['timestamp']['$date'] }}
+                        {{ item['timestamp'] }}
                     </p>
                 </div>
             </div>
