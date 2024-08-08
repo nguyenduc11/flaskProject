@@ -25,7 +25,7 @@ def get_math_result03():
         item['timestamp'] = test_date
         new_data.append(item)
 
-    print(f'new_data {new_data}')
+    # print(f'new_data {new_data}')
     return render_template('math_result.html', data=new_data, )
 
 
@@ -47,7 +47,7 @@ def get_math_result04():
         item['timestamp'] = test_date
         new_data.append(item)
 
-    print(f'new_data {new_data}')
+    # print(f'new_data {new_data}')
     return render_template('math_result.html', data=new_data, )
 
 

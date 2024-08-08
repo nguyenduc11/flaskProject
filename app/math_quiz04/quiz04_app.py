@@ -3,13 +3,14 @@ import random
 
 class Quiz04App:
     def __init__(self):
-        self.correct_sum = None
+        # self.correct_sum = None
+        # self.start_new_round()
         self.list1 = []  # Change to a list
         self.list2 = []
-        self.start_new_round()
-        # self.score = 0
 
     def start_new_round(self):
+        self.list1 = []  # Change to a list
+        self.list2 = []
         while len(self.list1) < 10 or len(self.list2) < 10:
             x = random.randint(11, 99)
             y = x % 10
