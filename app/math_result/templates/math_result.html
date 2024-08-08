@@ -4,6 +4,14 @@
 
 {% block content %}
 <div class="container py-5">
+    {% if plot_html %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {{ plot_html|safe }}
+        </div>
+    </div>
+    {% endif %}
+
     {% if data %}
     {% for item in data|reverse %}
     <div class="row mb-4">
