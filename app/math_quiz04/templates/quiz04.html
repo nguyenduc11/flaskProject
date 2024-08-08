@@ -6,20 +6,29 @@
     <h1 class="display-5 fw-bold text-center text-primary mb-4">Tính Tổng 2 Số Hạng</h1>
 
     {% if questions %}
-    <form method="post" action="{{  url_for('math_quiz04.math_quiz04_route')  }}" class="bg-light shadow rounded p-4 mb-4">
+    <form method="post" action="{{  url_for('math_quiz04.math_quiz04_route')  }}"
+          class="bg-light shadow rounded p-4 mb-4">
         {% for question in questions %}
         <div class="mb-3 row">
-            <label class="col-sm-6 col-form-label fw-bold" for="answer{{ loop.index }}">
-                {{ question }}
-            </label>
-            <div class="col-sm-6">
-
-                <input
-                        class="form-control"
-                        id="answer{{ loop.index }}" type="number" name="answer{{ loop.index }}" required>
-
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <label class="col-sm-6 col-form-label fw-bold" for="answer{{ loop.index }}">
+                                {{ question }}
+                            </label>
+                            <div class="col-sm-2">
+                                <div class="w-50">
+                                    <input class="form-control flex-grow-0" id="answer{{ loop.index }}" type="number"
+                                           name="answer{{ loop.index }}" required>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
+
         {% endfor %}
         <div class="d-flex justify-content-between">
             <button class="btn btn-primary mx-auto d-block" type="submit" name="submit">

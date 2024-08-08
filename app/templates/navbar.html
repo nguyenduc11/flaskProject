@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed-top sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('main.index') }}">Cục Bột Yêu</a>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart"
@@ -29,6 +29,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('math_quiz01.guess_difference') }}">Tính Hiệu</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Kết Quả
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ url_for('math_result.get_math_result03') }}">Quiz03</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('math_result.get_math_result04') }}">Quiz04</a></li>
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('to_do_list.get_tasks') }}">TO DO LIST</a>
                 </li>
@@ -42,6 +52,7 @@
                         <li><a class="dropdown-item" href="{{ url_for('mongo.mongoflask') }}">Flask</a></li>
                     </ul>
                 </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">

@@ -4,14 +4,20 @@
 
 {% block content %}
 <div class="container py-5">
-    {% if plot_html %}
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        {% if plot_html %}
+        <div class="col-md-6">
             {{ plot_html|safe }}
         </div>
+        {% endif %}
+        {% if bell_chart_html %}
+        <div class="col-md-6">
+            {{ bell_chart_html|safe }}
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
-
+</div>
+<div class="container py-5">
     {% if data %}
     {% for item in data|reverse %}
     <div class="row mb-4">
