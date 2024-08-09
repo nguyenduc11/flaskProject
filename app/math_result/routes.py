@@ -159,3 +159,5 @@ def generate_bell_chart(scores, title='Bell Curve Distribution of Scores', x_lab
     # Return the plot as HTML
     return fig.to_html()
 
+
+
